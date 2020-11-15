@@ -57,18 +57,3 @@ buck-out/
 
 # CocoaPods
 /ios/Pods/
-
-.expo/*
-npm-debug.*
-*.jks
-*.p8
-*.p12
-*.key
-*.mobileprovision
-*.orig.*
-web-build/
-
-.vscode
-
-src/api/rezeiptApi.js
-src/config/database.js
