@@ -44,7 +44,7 @@ const AnalysisScreen = () => {
     },
     {
       name: "Grocery",
-      population: 11,
+      population: 9,
       color: "rgb(0, 0, 255)",
       legendFontColor: "#7F7F7F",
       legendFontSize: 15

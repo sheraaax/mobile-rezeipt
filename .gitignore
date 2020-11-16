@@ -57,6 +57,10 @@ buck-out/
 
 # CocoaPods
 /ios/Pods/
+<<<<<<< HEAD
+src/api/rezeiptApi.js
+=======
 
 .expo
 .vscode
+>>>>>>> fa6aa4a9e7202f4884801bada95952f338d241e8
