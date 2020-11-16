@@ -2,6 +2,7 @@ import React from 'react';
 import { createAppContainer, createSwitchNavigator } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
 import { createBottomTabNavigator } from 'react-navigation-tabs';
+import Icon from 'react-native-vector-icons/FontAwesome5';
 
 import AnalysisScreen from './src/screens/AnalysisScreen';
 import HomeScreen from './src/screens/HomeScreen';
@@ -30,11 +31,46 @@ const switchNavigator = createSwitchNavigator({
     },
   }),
   mainFlow: createBottomTabNavigator({
-    Home: HomeScreen,
-    Analysis: AnalysisScreen,
-    ScanQR: ScanQRScreen,
-    Redemption: RedemptionScreen,
-  }),
+    Home: {
+      screen: HomeScreen,
+      navigationOptions:{  
+        tabBarLabel:'Home',  
+        tabBarIcon:({tintColor})=>(  
+            <Icon name="home" color={tintColor} size={25}/>  
+        )  
+      }  
+    },
+
+    Analysis: {
+      screen: AnalysisScreen,
+      navigationOptions:{  
+        tabBarLabel:'Analysis',  
+        tabBarIcon:({tintColor})=>(  
+            <Icon name="chart-pie" color={tintColor} size={25}/>  
+        )  
+      }  
+    },
+
+    ScanQR: {
+      screen: ScanQRScreen,
+      navigationOptions:{  
+        tabBarLabel:'Scan QR',  
+        tabBarIcon:({tintColor})=>(  
+            <Icon name="qrcode" color={tintColor} size={25}/>  
+        )  
+      },
+    },
+
+    Redemption: {
+      screen: RedemptionScreen,
+      navigationOptions:{  
+        tabBarLabel:'Home',  
+        tabBarIcon:({tintColor})=>(  
+            <Icon name="gift" color={tintColor} size={25}/>  
+        )  
+      }
+    }
+  }),  
 });
 
 const App = createAppContainer(switchNavigator);
