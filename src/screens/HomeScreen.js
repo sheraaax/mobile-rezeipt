@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, ScrollView } from 'react-native';
 import { Button } from 'react-native-elements';
 import { SafeAreaView } from 'react-navigation';
 import { Card, Title, Paragraph } from 'react-native-paper';
@@ -11,26 +11,29 @@ const HomeScreen = () => {
   const date = new Date().getDate();
   const month = new Date().getMonth();
   const year = new Date().getFullYear();
+  const hours = new Date().getHours();
+  const minutes = new Date().getMinutes();
   const todaysDate = new Date(year, month, date)
   const monthString =  todaysDate.toLocaleString('default', { month: 'long' });
 
   return (
     <View >
       <SafeAreaView>
-
+        <ScrollView>
           <Text style={styles.headline}>{monthString} Expenses</Text>
           <Text style={styles.totalExpense}>RM100.00</Text>
 
           <View style={{flexDirection:"row", justifyContent:"space-between"}}>
             <Text style={styles.date}>{date} {monthString} {year}</Text>
-            <Text style={styles.totalPrice}>RM20.00</Text>
+            <Text style={styles.totalPrice}>RM90.00</Text>
           </View>
+
           <Card style={styles.card}>
             <Card.Content style={styles.cardContent}>
               <Icon size={40} name="store-alt" color="grey"/>
               <View >
                 <Title style={styles.cardContentTitle}>Xen Lit Trading</Title>
-                <Paragraph style={styles.cardContentTimestamp}>timestamp</Paragraph>
+                <Paragraph style={styles.cardContentTimestamp}>{hours}:{minutes}</Paragraph>
               </View>
               <Paragraph style={styles.cardContentTotal}>RM10.00</Paragraph>
             </Card.Content>
@@ -41,31 +44,36 @@ const HomeScreen = () => {
               <Icon size={40} name="store-alt" color="grey"/>
               <View >
                 <Title style={styles.cardContentTitle}>ChuanAik Supermarket</Title>
-                <Paragraph style={styles.cardContentTimestamp}>timestamp</Paragraph>
+                <Paragraph style={styles.cardContentTimestamp}>12:10</Paragraph>
               </View>
               <Paragraph style={styles.cardContentTotal}>RM80.00</Paragraph>
             </Card.Content>
           </Card>  
 
-          <Text style={styles.date}>1 {monthString} {year}</Text>
+
+          <View style={{flexDirection:"row", justifyContent:"space-between"}}>
+            <Text style={styles.date}>1 {monthString} {year}</Text>
+            <Text style={styles.totalPrice}>RM10.00</Text>
+          </View>
 
           <Card style={styles.card}>
             <Card.Content style={styles.cardContent}>
               <Icon size={40} name="store-alt" color="grey"/>
               <View >
                 <Title style={styles.cardContentTitle}>Xen Lit Trading</Title>
-                <Paragraph style={styles.cardContentTimestamp}>timestamp</Paragraph>
+                <Paragraph style={styles.cardContentTimestamp}>3:30</Paragraph>
               </View>
               <Paragraph style={styles.cardContentTotal}>RM10.00</Paragraph>
             </Card.Content>
-          </Card>        
+          </Card>   
+               
 
           <Button
             style={styles.logoutBtn}
             title="Logout"
             onPress={logout}
           />
-
+        </ScrollView>
       </SafeAreaView>
     </View>
   )
