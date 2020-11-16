@@ -3,7 +3,6 @@ import { StyleSheet, View, TextInput, TouchableOpacity, Image, FlatList } from '
 import { Text } from 'react-native-elements';
 import { NavigationEvents } from 'react-navigation';
 import { Context as AuthContext } from '../context/AuthContext';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
 const SignupScreen = ({ navigation }) => {
   const { state, signup, clearErrorMessage } = useContext(AuthContext);
@@ -12,7 +11,6 @@ const SignupScreen = ({ navigation }) => {
 
 
   return (
-    <KeyboardAwareScrollView>
     <View style={styles.container}>
         <NavigationEvents onWillFocus={clearErrorMessage} />
 
@@ -60,7 +58,6 @@ const SignupScreen = ({ navigation }) => {
 
 
       </View>
-      </KeyboardAwareScrollView>
   );
 };
 
