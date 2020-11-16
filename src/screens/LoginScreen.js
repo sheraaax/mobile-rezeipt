@@ -10,7 +10,6 @@ const LoginScreen = ({navigation}) => {
   const [password, setPassword] = useState('');
 
   return (
-    <KeyboardAwareScrollView>
     <View style={styles.container}>
         <NavigationEvents onWillFocus={clearErrorMessage} />
 
@@ -22,7 +21,7 @@ const LoginScreen = ({navigation}) => {
             autoCapitalize="none"
             autoCorrect={false}
             placeholder="test@example.com"
-            placeholderTextColor="#596B74"
+            placeholderTextColor="white"
             value={email}
             onChangeText={setEmail}
             />
@@ -35,7 +34,7 @@ const LoginScreen = ({navigation}) => {
             autoCapitalize="none"
             autoCorrect={false}
             placeholder="password"
-            placeholderTextColor="#596B74"
+            placeholderTextColor="white"
             value={password}
             onChangeText={setPassword}
             />
@@ -61,7 +60,6 @@ const LoginScreen = ({navigation}) => {
         </TouchableOpacity>
 
       </View>
-      </KeyboardAwareScrollView>
   );
 };
 
@@ -91,7 +89,8 @@ const styles = StyleSheet.create({
   },
   inputText:{
     height:50,
-    color:"black"
+    color:"white",
+    textAlign: 'center'
   },
   forgot:{
     color:"#596B74",
@@ -109,7 +108,8 @@ const styles = StyleSheet.create({
     marginBottom:10
   },
   loginText:{
-    color:"black"
+    color:"white",
+    fontWeight:"bold"
   },
   signupText:{
     color:"#596B74",
