@@ -2,6 +2,7 @@ import React, { useState, useContext } from 'react';
 import { StyleSheet, Text, View, TextInput, TouchableOpacity, Image, FlatList } from 'react-native';
 import { NavigationEvents } from 'react-navigation';
 import { Context as AuthContext } from '../context/AuthContext';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
 const LoginScreen = ({navigation}) => {
   const { state, login, clearErrorMessage } = useContext(AuthContext);
@@ -9,6 +10,7 @@ const LoginScreen = ({navigation}) => {
   const [password, setPassword] = useState('');
 
   return (
+    <KeyboardAwareScrollView>
     <View style={styles.container}>
         <NavigationEvents onWillFocus={clearErrorMessage} />
 
@@ -59,6 +61,7 @@ const LoginScreen = ({navigation}) => {
         </TouchableOpacity>
 
       </View>
+      </KeyboardAwareScrollView>
   );
 };
 
