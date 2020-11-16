@@ -5,6 +5,7 @@ import { SafeAreaView } from 'react-navigation';
 import { Card, Title, Paragraph } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { Context as AuthContext } from '../context/AuthContext';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
 const HomeScreen = () => {
   const { logout } = useContext(AuthContext);
@@ -15,6 +16,7 @@ const HomeScreen = () => {
   const monthString =  todaysDate.toLocaleString('default', { month: 'long' });
 
   return (
+    <KeyboardAwareScrollView>
     <View >
       <SafeAreaView>
 
@@ -68,6 +70,7 @@ const HomeScreen = () => {
 
       </SafeAreaView>
     </View>
+    </KeyboardAwareScrollView>
   )
 };
 
