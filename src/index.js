@@ -1,8 +1,10 @@
 require('./models/Customer');
+require('./models/sales');
 const express = require('express');
 const jwt = require('jsonwebtoken');
 const bodyParser = require('body-parser');
 const authRoutes = require('./routes/authRoutes');
+const salesRoutes = require('./routes/salesRoutes');
 const requireAuth = require('./middlewares/requireAuth');
 
 const app = express();
@@ -15,22 +17,8 @@ db.authenticate()
 .then( () => console.log('Database connected'))
 .catch(error => console.log('Database is not connected ' + error))
 
-
-// const con = mysql.createConnection({
-//   host: '127.0.0.1',
-//   port: '3306',
-//   user: 'root',
-//   password: '[Peratha1998!]',
-//   database: 'rezeipt',
-//   multipleStatements: true
-// });
-
-// con.connect(function(error){
-//   if(error) console.log('Error connecting to mysql', error);
-//   else console.log('Connected to mysql');
-// });
-
 app.use(authRoutes);
+app.use(salesRoutes);
 
 app.get('/', requireAuth, (req, res) => {
   res.send(`Your email: ${req.customer.email}`);

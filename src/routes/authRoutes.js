@@ -57,19 +57,19 @@ router.post('/login', async (req, res) => {
  });
 
 
- router.get('/:id', async (req, res) => {
-  const id = req.params.id;
+//  router.get('/:id', async (req, res) => {
+//   const id = req.params.id;
 
-  await Customer.findByPk(id)
-    .then(data => {
-      res.send(data);
-    })
-    .catch(err => {
-      res.status(500).send({
-        message: "Error retrieving Customer with id=" + id
-      });
-    });
- }); 
+//   await Customer.findByPk(id)
+//     .then(data => {
+//       res.send(data);
+//     })
+//     .catch(err => {
+//       res.status(500).send({
+//         message: "Error retrieving Customer with id=" + id
+//       });
+//     });
+//  }); 
 
  
 
