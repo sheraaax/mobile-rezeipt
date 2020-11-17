@@ -64,7 +64,7 @@ const switchNavigator = createSwitchNavigator({
     Redemption: {
       screen: RedemptionScreen,
       navigationOptions:{  
-        tabBarLabel:'Home',  
+        tabBarLabel:'Rewards',  
         tabBarIcon:({tintColor})=>(  
             <Icon name="gift" color={tintColor} size={25}/>  
         )  

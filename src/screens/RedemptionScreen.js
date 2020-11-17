@@ -34,7 +34,7 @@ const RedemptionScreen = () => {
 
               <View>
                 <Title style={styles.cardContentTitle}>Cake Store</Title>
-                <Paragraph style={styles.cardContentTimestamp}>RM5 off your next order</Paragraph>
+                <Paragraph style={styles.cardContentDecsription}>RM5 off your next order</Paragraph>
               </View>
 
             </Card.Content>
