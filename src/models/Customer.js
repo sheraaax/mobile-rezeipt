@@ -29,7 +29,8 @@ const Customer = db.define('customer', {
       afterValidate: (customer) => {
         customer.password = bcrypt.hashSync(customer.password, 10);
       }
-    }
+    },
+
   });
 
 module.exports = Customer;
