@@ -11,6 +11,7 @@
     "dev": "nodemon src/index.js"
   },
   "dependencies": {
+    "@react-native-community/async-storage": "^1.12.1",
     "@react-native-community/masked-view": "^0.1.10",
     "@react-navigation/native": "^5.8.9",
     "axios": "^0.21.0",
