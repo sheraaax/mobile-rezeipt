@@ -1,17 +1,19 @@
-import * as React from 'react';
+import React, { useContext } from 'react';
 import { Avatar, Card, Title, Paragraph } from 'react-native-paper';
-import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, FlatList } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import Icon from 'react-native-vector-icons/FontAwesome5';
+import { Context as RedemptionContext } from '../context/RedemptionContext';
+import { NavigationEvents } from 'react-navigation';
 
-const LeftContent = props => <Avatar.Icon {...props} icon="folder" />
 
 const RedemptionScreen = () => {
+  const { state, fetchRedemptions } = useContext(RedemptionContext);
 
   return (
     <KeyboardAwareScrollView>
       <View style={styles.container}>
-
+        
         <Text style={styles.totalReceipts}>1120</Text>
         <Text style={styles.headline}>Receipts Collected</Text>
 
@@ -25,6 +27,23 @@ const RedemptionScreen = () => {
           <Text style={styles.navigationText}>Redeemed</Text>
         </TouchableOpacity>
 
+      </View>
+
+      <View>
+        <NavigationEvents onWillFocus={fetchRedemptions} />
+        <FlatList
+          data={state}
+          keyExtractor={item => item.id.toString()}
+          renderItem={({ item }) => {
+            return (
+              <View>
+                <Text>{item.name}</Text>
+                <Text>{item.description}</Text>
+                <Text>{item.points}</Text>
+              </View>
+            );
+          }}
+        />
       </View>
 
         <TouchableOpacity>
@@ -98,8 +117,8 @@ const RedemptionScreen = () => {
         </TouchableOpacity>
 
       </View>
-    </KeyboardAwareScrollView>
-  )
+      </KeyboardAwareScrollView> 
+       )
 };
 
 const styles = StyleSheet.create({
@@ -107,9 +126,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "space-between",
     backgroundColor: "#fff",
-    padding: 10,
-    margin: 15,
-    marginTop: 40
+    padding: 10
   },
 
   totalReceipts: {
