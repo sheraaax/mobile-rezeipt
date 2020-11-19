@@ -2,7 +2,7 @@ const express = require('express');
 const db = require('../config/database');
 const requireAuth = require('../middlewares/requireAuth');
 const Sales = require('../models/sales');
-const Customer = require('../models/Customer');
+const Customer = require('../models/customer');
 
 const router = express.Router();
 
