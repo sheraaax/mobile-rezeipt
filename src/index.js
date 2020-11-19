@@ -6,6 +6,7 @@ const bodyParser = require('body-parser');
 const authRoutes = require('./routes/authRoutes');
 const salesRoutes = require('./routes/salesRoutes');
 const redemptionRoutes = require('./routes/redemptionRoutes');
+const customerRedemptionRoutes = require('./routes/customerRedemptionRoutes');
 const requireAuth = require('./middlewares/requireAuth');
 
 const app = express();
@@ -21,6 +22,7 @@ db.authenticate()
 app.use(authRoutes);
 app.use(salesRoutes);
 app.use(redemptionRoutes);
+app.use(customerRedemptionRoutes);
 
 app.get('/', requireAuth, (req, res) => {
   res.send(`Your email: ${req.customer.email}`);
