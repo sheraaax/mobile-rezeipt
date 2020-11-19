@@ -22,7 +22,7 @@ const SignupScreen = ({ navigation }) => {
             autoCapitalize="none"
             autoCorrect={false}
             placeholder="test@example.com"
-            placeholderTextColor="#596B74"
+            placeholderTextColor="white"
             value={email}
             onChangeText={setEmail}
             />
@@ -35,7 +35,7 @@ const SignupScreen = ({ navigation }) => {
             autoCapitalize="none"
             autoCorrect={false}
             placeholder="password"
-            placeholderTextColor="#596B74"
+            placeholderTextColor="white"
             value={password}
             onChangeText={setPassword}
             />
@@ -81,7 +81,8 @@ const styles = StyleSheet.create({
   },
   inputText:{
     height:50,
-    color:"black"
+    color:"white",
+    textAlign: 'center'
   },
   forgot:{
     color:"#596B74",
@@ -98,7 +99,8 @@ const styles = StyleSheet.create({
     marginBottom:10
   },
   loginText:{
-    color:"black"
+    color:"white",
+    fontWeight:"bold"
   },
   signupText:{
     color:"#596B74",

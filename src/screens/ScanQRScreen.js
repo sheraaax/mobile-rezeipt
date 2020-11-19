@@ -26,9 +26,7 @@ class ScanQrScreen extends Component {
         flashMode={RNCamera.Constants.FlashMode.torch}
         topContent={
           <Text style={styles.centerText}>
-            Go to{' '}
-            <Text style={styles.textBold}>wikipedia.org/wiki/QR_code</Text> on
-            your computer and scan the QR code.
+            Scan QR Code to receive receipt!
           </Text>
         }
         bottomContent={
