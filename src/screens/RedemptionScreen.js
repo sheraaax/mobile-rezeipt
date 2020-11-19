@@ -4,11 +4,13 @@ import { StyleSheet, Text, View, TouchableOpacity, FlatList } from 'react-native
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { Context as RedemptionContext } from '../context/RedemptionContext';
+import { Context as CustomerRedemptionContext } from '../context/CustomerRedemptionContext';
 import { NavigationEvents } from 'react-navigation';
 
 
 const RedemptionScreen = () => {
   const { state, fetchRedemptions } = useContext(RedemptionContext);
+  const { data, createCustomerRedemption } = useContext(CustomerRedemptionContext);
 
   return (
     <KeyboardAwareScrollView>
@@ -36,85 +38,25 @@ const RedemptionScreen = () => {
           keyExtractor={item => item.id.toString()}
           renderItem={({ item }) => {
             return (
-              <View>
-                <Text>{item.name}</Text>
-                <Text>{item.description}</Text>
-                <Text>{item.points}</Text>
+              <View style={styles.card}>
+              < TouchableOpacity onPress={()=>console.log(createCustomerRedemption(0 , item.id))}>
+                  <Card style ={styles.card}>
+                    <Card.Content style={styles.cardContent}>
+                      <Icon size={60} name="birthday-cake" color="grey"/>
+
+                      <View>
+                        <Title style={styles.cardContentTitle}>{item.name}</Title>
+                        <Paragraph style={styles.cardContentDecsription}>{item.description}</Paragraph>
+                      </View>
+
+                    </Card.Content>
+                  </Card>
+              </TouchableOpacity>
               </View>
             );
           }}
         />
       </View>
-
-        <TouchableOpacity>
-          <Card style ={styles.card}>
-            <Card.Content style={styles.cardContent}>
-              <Icon size={60} name="birthday-cake" color="grey"/>
-
-              <View>
-                <Title style={styles.cardContentTitle}>Cake Store</Title>
-                <Paragraph style={styles.cardContentDecsription}>RM5 off your next order</Paragraph>
-              </View>
-
-            </Card.Content>
-          </Card>
-        </TouchableOpacity>
-
-        <TouchableOpacity>
-          <Card style ={styles.card}>
-            <Card.Content style={styles.cardContent}>
-              <Icon size={60} name="tshirt" color="grey"/>
-
-              <View>
-                <Title style={styles.cardContentTitle}>Fashion Store</Title>
-                <Paragraph style={styles.cardContentDecsription}>RM25 off your next order</Paragraph>
-              </View>
-
-            </Card.Content>
-          </Card>
-        </TouchableOpacity>
-
-        <TouchableOpacity>
-          <Card style ={styles.card}>
-            <Card.Content style={styles.cardContent}>
-              <Icon size={60} name="pizza-slice" color="grey"/>
-
-              <View>
-                <Title style={styles.cardContentTitle}>Pizza Store</Title>
-                <Paragraph style={styles.cardContentDecsription}>5% off your next order</Paragraph>
-              </View>
-
-            </Card.Content>
-          </Card>
-        </TouchableOpacity>
-
-        <TouchableOpacity>
-          <Card style ={styles.card}>
-            <Card.Content style={styles.cardContent}>
-              <Icon size={60} name="birthday-cake" color="grey"/>
-
-              <View>
-                <Title style={styles.cardContentTitle}>Cake Store</Title>
-                <Paragraph style={styles.cardContentDecsription}>RM5 off your next order</Paragraph>
-              </View>
-
-            </Card.Content>
-          </Card>
-        </TouchableOpacity>
-
-        <TouchableOpacity>
-          <Card style ={styles.card}>
-            <Card.Content style={styles.cardContent}>
-              <Icon size={60} name="tshirt" color="grey"/>
-
-              <View>
-                <Title style={styles.cardContentTitle}>Fashion Store</Title>
-                <Paragraph style={styles.cardContentDecsription}>RM25 off your next order</Paragraph>
-              </View>
-
-            </Card.Content>
-          </Card>
-        </TouchableOpacity>
 
       </View>
       </KeyboardAwareScrollView> 

@@ -10,6 +10,8 @@ const router = express.Router();
 router.use(requireAuth);
 
 Customer.hasMany(CustomerRedemption);
+CustomerRedemption.belongsTo(Customer);
+Redemption.hasMany(CustomerRedemption);
 CustomerRedemption.belongsTo(Redemption);
 
 
@@ -22,6 +24,21 @@ router.get('/customerRedemption', async (req, res) => {
     catch(error){
         console.log(error)
     }
+});
+
+router.post('/customerRedemption', async(req, res) => {
+        const {redemptionId,customerId} = req.body;
+        console.log(redemptionId);
+
+        try{
+            const customer_redemption = new CustomerRedemption({ customerId, redemptionId});
+            await customer_redemption.save();
+            res.send(customer_redemption);
+        }
+        catch(err){
+            console.log(err);
+        }
+
 });
 
 module.exports = router;

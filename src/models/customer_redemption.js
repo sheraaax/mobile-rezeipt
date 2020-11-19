@@ -14,7 +14,8 @@ const CustomerRedemption = db.define('customer_redemption', {
         references: {         
             model: 'redemption',
             key: 'id'
-          }
+          },
+        allowNull: false
     },
 
     customerId : {
@@ -22,8 +23,11 @@ const CustomerRedemption = db.define('customer_redemption', {
         references: {        
             model: 'customer',
             key: 'id'
-          }
-    }}, {
+          },
+        allowNull: false
+    }}, 
+    
+    {
         tableName: 'customer_redemption',
         timestamps: false,
     });
