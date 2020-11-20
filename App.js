@@ -10,12 +10,27 @@ import LoginScreen from './src/screens/LoginScreen';
 import RedemptionScreen from './src/screens/RedemptionScreen';
 import ScanQRScreen from './src/screens/ScanQRScreen';
 import SignupScreen from './src/screens/SignupScreen';
+import CustomerRedemptionDetailScreen from './src/screens/CustomerRedemptionDetailScreen';
 import ResolveAuthScreen from './src/screens/ResolveAuthScreen';
 import { Provider as AuthProvider } from './src/context/AuthContext';
 import { Provider as RedemptionProvider } from './src/context/RedemptionContext';
 import { Provider as CustomerRedemptionProvider } from './src/context/CustomerRedemptionContext';
 import { setNavigator } from './src/navigationRef';
 import CustomerRedemptionScreen from './src/screens/CustomerRedemptionScreen';
+
+const RedemptionFlow = createStackNavigator({
+  Redemption: RedemptionScreen,
+  CustomerRedemption:  CustomerRedemptionScreen,
+  CustomerRedemptionDetail: CustomerRedemptionDetailScreen
+});
+
+RedemptionFlow.navigationOptions = {
+  headerShown: false,
+  tabBarLabel:'Rewards',  
+  tabBarIcon:({tintColor})=>(  
+      <Icon name="gift" color={tintColor} size={25}/>  
+    )
+  };
 
 const switchNavigator = createSwitchNavigator({
   ResolveAuth: ResolveAuthScreen,
@@ -63,21 +78,10 @@ const switchNavigator = createSwitchNavigator({
         )  
       },
     },
-
     Redemption: {
-      screen: RedemptionScreen,
-      navigationOptions:{  
-        tabBarLabel:'Rewards',  
-        tabBarIcon:({tintColor})=>(  
-            <Icon name="gift" color={tintColor} size={25}/>  
-        )  
-      }
-    }
-  }),
-  
-  CustomerRedemption: {
-    screen: CustomerRedemptionScreen
-  } 
+      screen: RedemptionFlow,
+    } 
+})
 });
 
 const App = createAppContainer(switchNavigator);
