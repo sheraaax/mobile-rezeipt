@@ -1,17 +1,21 @@
-import * as React from 'react';
+import React, { useContext } from 'react';
 import { Avatar, Card, Title, Paragraph } from 'react-native-paper';
-import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, FlatList } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import Icon from 'react-native-vector-icons/FontAwesome5';
+import { Context as RedemptionContext } from '../context/RedemptionContext';
+import { Context as CustomerRedemptionContext } from '../context/CustomerRedemptionContext';
+import { NavigationEvents } from 'react-navigation';
 
-const LeftContent = props => <Avatar.Icon {...props} icon="folder" />
 
 const RedemptionScreen = () => {
+  const { state, fetchRedemptions } = useContext(RedemptionContext);
+  const { data, createCustomerRedemption } = useContext(CustomerRedemptionContext);
 
   return (
     <KeyboardAwareScrollView>
       <View style={styles.container}>
-
+        
         <Text style={styles.totalReceipts}>1120</Text>
         <Text style={styles.headline}>Receipts Collected</Text>
 
@@ -27,79 +31,36 @@ const RedemptionScreen = () => {
 
       </View>
 
-        <TouchableOpacity>
-          <Card style ={styles.card}>
-            <Card.Content style={styles.cardContent}>
-              <Icon size={60} name="birthday-cake" color="grey"/>
+      <View>
+        <NavigationEvents onWillFocus={fetchRedemptions} />
+        <FlatList
+          data={state}
+          keyExtractor={item => item.id.toString()}
+          renderItem={({ item }) => {
+            return (
+              <View style={styles.card}>
+              < TouchableOpacity onPress={()=>console.log(createCustomerRedemption(0 , item.id))}>
+                  <Card style ={styles.card}>
+                    <Card.Content style={styles.cardContent}>
+                      <Icon size={60} name="birthday-cake" color="grey"/>
 
-              <View>
-                <Title style={styles.cardContentTitle}>Cake Store</Title>
-                <Paragraph style={styles.cardContentDecsription}>RM5 off your next order</Paragraph>
+                      <View>
+                        <Title style={styles.cardContentTitle}>{item.name}</Title>
+                        <Paragraph style={styles.cardContentDecsription}>{item.description}</Paragraph>
+                      </View>
+
+                    </Card.Content>
+                  </Card>
+              </TouchableOpacity>
               </View>
-
-            </Card.Content>
-          </Card>
-        </TouchableOpacity>
-
-        <TouchableOpacity>
-          <Card style ={styles.card}>
-            <Card.Content style={styles.cardContent}>
-              <Icon size={60} name="tshirt" color="grey"/>
-
-              <View>
-                <Title style={styles.cardContentTitle}>Fashion Store</Title>
-                <Paragraph style={styles.cardContentDecsription}>RM25 off your next order</Paragraph>
-              </View>
-
-            </Card.Content>
-          </Card>
-        </TouchableOpacity>
-
-        <TouchableOpacity>
-          <Card style ={styles.card}>
-            <Card.Content style={styles.cardContent}>
-              <Icon size={60} name="pizza-slice" color="grey"/>
-
-              <View>
-                <Title style={styles.cardContentTitle}>Pizza Store</Title>
-                <Paragraph style={styles.cardContentDecsription}>5% off your next order</Paragraph>
-              </View>
-
-            </Card.Content>
-          </Card>
-        </TouchableOpacity>
-
-        <TouchableOpacity>
-          <Card style ={styles.card}>
-            <Card.Content style={styles.cardContent}>
-              <Icon size={60} name="birthday-cake" color="grey"/>
-
-              <View>
-                <Title style={styles.cardContentTitle}>Cake Store</Title>
-                <Paragraph style={styles.cardContentDecsription}>RM5 off your next order</Paragraph>
-              </View>
-
-            </Card.Content>
-          </Card>
-        </TouchableOpacity>
-
-        <TouchableOpacity>
-          <Card style ={styles.card}>
-            <Card.Content style={styles.cardContent}>
-              <Icon size={60} name="tshirt" color="grey"/>
-
-              <View>
-                <Title style={styles.cardContentTitle}>Fashion Store</Title>
-                <Paragraph style={styles.cardContentDecsription}>RM25 off your next order</Paragraph>
-              </View>
-
-            </Card.Content>
-          </Card>
-        </TouchableOpacity>
+            );
+          }}
+        />
+      </View>
 
       </View>
-    </KeyboardAwareScrollView>
-  )
+      </KeyboardAwareScrollView> 
+       )
 };
 
 const styles = StyleSheet.create({
@@ -107,9 +68,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "space-between",
     backgroundColor: "#fff",
-    padding: 10,
-    margin: 15,
-    marginTop: 40
+    padding: 10
   },
 
   totalReceipts: {

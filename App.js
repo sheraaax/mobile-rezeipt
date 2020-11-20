@@ -12,6 +12,8 @@ import ScanQRScreen from './src/screens/ScanQRScreen';
 import SignupScreen from './src/screens/SignupScreen';
 import ResolveAuthScreen from './src/screens/ResolveAuthScreen';
 import { Provider as AuthProvider } from './src/context/AuthContext';
+import { Provider as RedemptionProvider } from './src/context/RedemptionContext';
+import { Provider as CustomerRedemptionProvider } from './src/context/CustomerRedemptionContext';
 import { setNavigator } from './src/navigationRef';
 
 const switchNavigator = createSwitchNavigator({
@@ -78,7 +80,11 @@ const App = createAppContainer(switchNavigator);
 export default () => {
   return (
     <AuthProvider>
+      <RedemptionProvider>
+        <CustomerRedemptionProvider>
       <App ref={(navigator) => { setNavigator(navigator)} } />
+      </CustomerRedemptionProvider> 
+      </RedemptionProvider>
     </AuthProvider>
   );
 };

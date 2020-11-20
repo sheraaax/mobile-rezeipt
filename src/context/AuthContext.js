@@ -1,4 +1,4 @@
-import { AsyncStorage } from 'react-native';
+import AsyncStorage from '@react-native-community/async-storage';
 import createDataContext from './createDataContext';
 import rezeiptApi from '../api/rezeiptApi';
 import { navigate } from '../navigationRef';
@@ -19,12 +19,16 @@ const authReducer = (state, action) => {
 };
 
 const tryLocalLogin = (dispatch) => async () => {
+  try{
   const token = await AsyncStorage.getItem('token');
   if (token) {
     dispatch({ type: 'login', payload: token });
     navigate('Home');
   } else {
     navigate('Login');
+  }}
+  catch(err){
+    console.log(err);
   }
 };
 
@@ -70,9 +74,14 @@ const login = (dispatch) => async ({ email, password }) => {
 
 
 const logout = (dispatch) => async () => {
+  try{
     await AsyncStorage.removeItem('token');
     dispatch({ type: 'logout' });
     navigate('loginFlow');
+  }
+  catch(err){
+    console.log(err);
+  }
 };
 
 
