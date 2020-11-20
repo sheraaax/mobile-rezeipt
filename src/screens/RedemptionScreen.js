@@ -8,7 +8,7 @@ import { Context as CustomerRedemptionContext } from '../context/CustomerRedempt
 import { NavigationEvents } from 'react-navigation';
 
 
-const RedemptionScreen = () => {
+const RedemptionScreen = ({navigation}) => {
   const { state, fetchRedemptions } = useContext(RedemptionContext);
   const { data, createCustomerRedemption } = useContext(CustomerRedemptionContext);
 
@@ -25,7 +25,7 @@ const RedemptionScreen = () => {
           <Text style={styles.navigationText}>Rewards Available</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity>
+        <TouchableOpacity onPress={()=>navigation.navigate('CustomerRedemption')}>
           <Text style={styles.navigationText}>Redeemed</Text>
         </TouchableOpacity>
 
@@ -39,7 +39,7 @@ const RedemptionScreen = () => {
           renderItem={({ item }) => {
             return (
               <View style={styles.card}>
-              < TouchableOpacity onPress={()=>console.log(createCustomerRedemption(0 , item.id))}>
+              < TouchableOpacity onPress={()=>console.log(createCustomerRedemption(3 , item.id))}>
                   <Card style ={styles.card}>
                     <Card.Content style={styles.cardContent}>
                       <Icon size={60} name="birthday-cake" color="grey"/>
