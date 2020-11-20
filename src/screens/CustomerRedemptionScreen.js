@@ -38,7 +38,7 @@ const CustomerRedemptionScreen = ({navigation}) => {
           renderItem={({ item }) => {
             return (
               <View style={styles.card}>
-              < TouchableOpacity>
+              <TouchableOpacity onPress={()=>navigation.navigate('CustomerRedemptionDetail', {id: item.id})}>
                   <Card style ={styles.card}>
                     <Card.Content style={styles.cardContent}>
                       <Icon size={60} name="birthday-cake" color="grey"/>

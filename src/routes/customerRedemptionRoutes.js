@@ -41,4 +41,16 @@ router.post('/customerRedemption', async(req, res) => {
 
 });
 
+router.get('/customerRedemption/:id', async (req, res) => {
+    try{
+        const customerRedemptionId = req.params.id;
+        console.log(customerRedemptionId);
+        const customer_redemption = await CustomerRedemption.findByPk(customerRedemptionId);
+        res.send(customer_redemption);
+    }
+    catch(error){
+        console.log(error)
+    }
+});
+
 module.exports = router;

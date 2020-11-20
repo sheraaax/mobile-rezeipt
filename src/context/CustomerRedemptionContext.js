@@ -5,6 +5,10 @@ const customerRedemptionReducer = (state, action) => {
     switch (action.type){
         case 'fetch_customerRedemptions':
             return action.payload;
+        
+        case 'fetch_customerRedemptionDetails':
+            return action.payload;
+            
         default:
             return state;
     }
@@ -20,8 +24,13 @@ const fetchCustomerRedemptions = dispatch => async () => {
     dispatch({ type: 'fetch_customerRedemptions', payload: response.data });
   };
 
+const fetchCustomerRedemptionDetails = dispatch => async() => {
+    const response = await RezeiptApi.get('/customerRedemption/:id');
+    dispatch({ type: 'fetch_customerRedemptionDetails', payload:response.data});
+};
+
 export const { Context, Provider } = createDataContext(
     customerRedemptionReducer, 
-    { createCustomerRedemption, fetchCustomerRedemptions },
+    { createCustomerRedemption, fetchCustomerRedemptions, fetchCustomerRedemptionDetails },
     []
   );
