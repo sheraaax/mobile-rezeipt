@@ -1,14 +1,19 @@
 import React, { useContext } from 'react';
-import { StyleSheet, Text, View, ScrollView } from 'react-native';
-import { Button } from 'react-native-elements';
-import { SafeAreaView } from 'react-navigation';
-import { Card, Title, Paragraph } from 'react-native-paper';
+import { StyleSheet, Text, View, ScrollView, FlatList } from 'react-native';
+import { Button, ListItem } from 'react-native-elements';
+import { SafeAreaView, NavigationEvents } from 'react-navigation';
+import { Card, Title, Paragraph, List } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { Context as AuthContext } from '../context/AuthContext';
+import { Context as SalesContext } from '../context/SalesContext';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
+import phpUnserialize from 'phpunserialize';
+
 
 const HomeScreen = () => {
   const { logout } = useContext(AuthContext);
+  const { state, fetchSales } = useContext(SalesContext);
+  
   const date = new Date().getDate();
   const month = new Date().getMonth();
   const year = new Date().getFullYear();
@@ -22,15 +27,52 @@ const HomeScreen = () => {
     <View >
       <SafeAreaView>
         <ScrollView>
+
+          <NavigationEvents onWillFocus={fetchSales} />
+
           <Text style={styles.headline}>{monthString} Expenses</Text>
           <Text style={styles.totalExpense}>RM100.00</Text>
 
-          <View style={{flexDirection:"row", justifyContent:"space-between"}}>
+          <FlatList
+            data={state}
+            keyExtractor={item => item.id}
+            renderItem={({ item }) => {
+              const totalPrice = phpUnserialize(item.cart);
+              const newTotalPrice = (Math.round(totalPrice.totalPrice * 100) / 100).toFixed(2);
+              //<ListItem title={totalPrice.totalPrice} />
+              
+              return (
+                <View>
+
+                <View style={{flexDirection:"row", justifyContent:"space-between"}}>
+                  {/* <Text style={styles.date}>{date} {monthString} {year}</Text> */}
+                  <Text style={styles.date}>{item.created_at}</Text>
+                </View>
+               
+                <Card style={styles.card}>
+                  <Card.Content style={styles.cardContent}>
+                    <Icon size={40} name="store-alt" color="grey"/>
+                    <View >
+                      <Title style={styles.cardContentTitle}>Xen Lit Trading</Title>
+                      <Paragraph style={styles.cardContentTimestamp}>{hours}:{minutes}</Paragraph>
+                    </View>
+                      <Paragraph style={styles.cardContentTotal}>RM{newTotalPrice}</Paragraph>
+                  </Card.Content>
+                </Card>  
+
+              </View>
+
+              );
+            }}
+          />
+
+
+          {/* <View style={{flexDirection:"row", justifyContent:"space-between"}}>
             <Text style={styles.date}>{date} {monthString} {year}</Text>
             <Text style={styles.totalPrice}>RM90.00</Text>
-          </View>
+          </View> */}
 
-          <Card style={styles.card}>
+          {/* <Card style={styles.card}>
             <Card.Content style={styles.cardContent}>
               <Icon size={40} name="store-alt" color="grey"/>
               <View >
@@ -67,7 +109,7 @@ const HomeScreen = () => {
               </View>
               <Paragraph style={styles.cardContentTotal}>RM10.00</Paragraph>
             </Card.Content>
-          </Card>   
+          </Card>    */}
                
 
           <Button

@@ -14,6 +14,7 @@ import ResolveAuthScreen from './src/screens/ResolveAuthScreen';
 import { Provider as AuthProvider } from './src/context/AuthContext';
 import { Provider as RedemptionProvider } from './src/context/RedemptionContext';
 import { Provider as CustomerRedemptionProvider } from './src/context/CustomerRedemptionContext';
+import { Provider as SalesProvider } from './src/context/SalesContext';
 import { setNavigator } from './src/navigationRef';
 import CustomerRedemptionScreen from './src/screens/CustomerRedemptionScreen';
 
@@ -85,11 +86,13 @@ const App = createAppContainer(switchNavigator);
 export default () => {
   return (
     <AuthProvider>
-      <RedemptionProvider>
-        <CustomerRedemptionProvider>
-      <App ref={(navigator) => { setNavigator(navigator)} } />
-      </CustomerRedemptionProvider> 
-      </RedemptionProvider>
+      <SalesProvider>
+        <RedemptionProvider>
+          <CustomerRedemptionProvider>
+            <App ref={(navigator) => { setNavigator(navigator)} } />
+          </CustomerRedemptionProvider> 
+        </RedemptionProvider>
+      </SalesProvider>
     </AuthProvider>
   );
 };
