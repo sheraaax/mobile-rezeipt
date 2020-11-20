@@ -15,6 +15,7 @@ import { Provider as AuthProvider } from './src/context/AuthContext';
 import { Provider as RedemptionProvider } from './src/context/RedemptionContext';
 import { Provider as CustomerRedemptionProvider } from './src/context/CustomerRedemptionContext';
 import { setNavigator } from './src/navigationRef';
+import CustomerRedemptionScreen from './src/screens/CustomerRedemptionScreen';
 
 const switchNavigator = createSwitchNavigator({
   ResolveAuth: ResolveAuthScreen,
@@ -72,7 +73,11 @@ const switchNavigator = createSwitchNavigator({
         )  
       }
     }
-  }),  
+  }),
+  
+  CustomerRedemption: {
+    screen: CustomerRedemptionScreen
+  } 
 });
 
 const App = createAppContainer(switchNavigator);
