@@ -25,11 +25,29 @@ const CustomerRedemption = db.define('customer_redemption', {
             key: 'id'
           },
         allowNull: false
-    }}, 
+    },
+
+    //add status to customer redemption: A - available, R - redeemeed, E - expired and not used
+    status : {
+        type: Sequelize.CHAR,
+        defaultValue: "A",
+    },
+
+    //createdAt == date customer redeemed from application
+    createdAt : {
+        type: Sequelize.NOW
+      },
+
+      //updatedAt == date customer redeemed from the store
+    updatedAt : {
+        type: 'TIMESTAMP',
+        defaultValue: null
+      }
+    
+}, 
     
     {
         tableName: 'customer_redemption',
-        timestamps: false,
     });
 
     module.exports = CustomerRedemption;

@@ -18,6 +18,11 @@ const Customer = db.define('customer', {
       type: Sequelize.STRING,
       allowNull: false
     },
+    pointsCollected : {
+      type: Sequelize.INTEGER,
+      allowNull: false,
+      defaultValue: 0
+    },
     createdAt : {
       type: Sequelize.NOW
     },

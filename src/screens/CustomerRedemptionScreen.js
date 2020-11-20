@@ -3,14 +3,13 @@ import { Avatar, Card, Title, Paragraph } from 'react-native-paper';
 import { StyleSheet, Text, View, TouchableOpacity, FlatList } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import Icon from 'react-native-vector-icons/FontAwesome5';
-import { Context as RedemptionContext } from '../context/RedemptionContext';
 import { Context as CustomerRedemptionContext } from '../context/CustomerRedemptionContext';
 import { NavigationEvents } from 'react-navigation';
 
 
-const RedemptionScreen = ({navigation}) => {
-  const { state, fetchRedemptions } = useContext(RedemptionContext);
-  const { data, createCustomerRedemption } = useContext(CustomerRedemptionContext);
+const CustomerRedemptionScreen = ({navigation}) => {
+  const { state, fetchCustomerRedemptions } = useContext(CustomerRedemptionContext);
+  console.log(state);
 
   return (
     <KeyboardAwareScrollView>
@@ -21,32 +20,32 @@ const RedemptionScreen = ({navigation}) => {
 
       <View style={styles.navigation}>
 
-        <TouchableOpacity>
+        <TouchableOpacity onPress={()=>navigation.navigate('Redemption')}>
           <Text style={styles.navigationText}>Rewards Available</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity onPress={()=>navigation.navigate('CustomerRedemption')}>
+        <TouchableOpacity>
           <Text style={styles.navigationText}>Redeemed</Text>
         </TouchableOpacity>
 
       </View>
 
       <View>
-        <NavigationEvents onWillFocus={fetchRedemptions} />
+        <NavigationEvents onWillFocus={fetchCustomerRedemptions} />
         <FlatList
           data={state}
           keyExtractor={item => item.id.toString()}
           renderItem={({ item }) => {
             return (
               <View style={styles.card}>
-              < TouchableOpacity onPress={()=>console.log(createCustomerRedemption(3 , item.id))}>
+              < TouchableOpacity>
                   <Card style ={styles.card}>
                     <Card.Content style={styles.cardContent}>
                       <Icon size={60} name="birthday-cake" color="grey"/>
 
                       <View>
-                        <Title style={styles.cardContentTitle}>{item.name}</Title>
-                        <Paragraph style={styles.cardContentDecsription}>{item.description}</Paragraph>
+                        <Title style={styles.cardContentTitle}>{item.redemptionId}</Title>
+                        <Paragraph style={styles.cardContentDecsription}>{item.status}</Paragraph>
                       </View>
 
                     </Card.Content>
@@ -119,4 +118,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default RedemptionScreen;
+export default CustomerRedemptionScreen;

@@ -18,7 +18,15 @@ const Redemption = db.define('redemption', {
     points : {
         type: Sequelize.INTEGER,
         allowNull: false
-    }
+    },
+    discountAmount : {
+        type : Sequelize.INTEGER,
+        allowNull: false,
+    },
+    expirationDate : {
+        type: Sequelize.DATE,
+        allowNull: false
+    },
 },{
     tableName: 'redemption',
     timestamps: false
