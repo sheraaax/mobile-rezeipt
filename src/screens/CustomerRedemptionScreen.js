@@ -11,8 +11,28 @@ const CustomerRedemptionScreen = ({navigation}) => {
   const { state, fetchCustomerRedemptions } = useContext(CustomerRedemptionContext);
   console.log(state);
 
+  function renderNavBar() {
+    return (
+      <View 
+        style={{
+          flexDirection:'row',
+          height:80,
+          paddingHorizontal: 24,
+          alignItems:'flex-end',
+        }}
+      >
+        <TouchableOpacity onPress={()=>navigation.navigate('Redemption')}>
+          <Icon name="arrow-left" color="grey" size={30} />
+        </TouchableOpacity>
+      </View>
+    )
+  }
+
   return (
     <KeyboardAwareScrollView>
+
+      {renderNavBar()}
+
       <View style={styles.container}>
         
         <Text style={styles.totalReceipts}>1120</Text>
