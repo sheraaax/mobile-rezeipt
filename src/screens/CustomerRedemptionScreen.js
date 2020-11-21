@@ -6,10 +6,26 @@ import Icon from 'react-native-vector-icons/FontAwesome5';
 import { Context as CustomerRedemptionContext } from '../context/CustomerRedemptionContext';
 import { NavigationEvents } from 'react-navigation';
 
+renderStatus = (status) => {
+  if(status == "A"){
+      return(
+          <Paragraph style={styles.cardContentDecsription}>Available</Paragraph>
+      );
+  }else if(status == "R"){
+    return (
+      <Paragraph style={styles.cardContentDecsription}t>Redeemed</Paragraph>
+    );
+  }
+  else{
+      return(
+        <Paragraph style={styles.cardContentDecsription}>Expired</Paragraph>
+      );
+  }
+};
+
 
 const CustomerRedemptionScreen = ({navigation}) => {
   const { state, fetchCustomerRedemptions } = useContext(CustomerRedemptionContext);
-  console.log(state);
 
   return (
     <KeyboardAwareScrollView>
@@ -44,8 +60,9 @@ const CustomerRedemptionScreen = ({navigation}) => {
                       <Icon size={60} name="birthday-cake" color="grey"/>
 
                       <View>
-                        <Title style={styles.cardContentTitle}>{item.redemptionId}</Title>
-                        <Paragraph style={styles.cardContentDecsription}>{item.status}</Paragraph>
+                        <Title style={styles.cardContentTitle}>{item.redemption.name}</Title>
+                        <Paragraph style={styles.cardContentDecsription}>{item.redemption.description}</Paragraph>
+                        {this.renderStatus(item.status)}
                       </View>
 
                     </Card.Content>

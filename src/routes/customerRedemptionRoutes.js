@@ -18,7 +18,10 @@ CustomerRedemption.belongsTo(Redemption);
 router.get('/customerRedemption', async (req, res) => {
     try{
         const customerId = req.customer.id;
-        const customer_redemption = await CustomerRedemption.findAll({ where: { customerId }});
+        const customer_redemption = await CustomerRedemption.findAll({ where: {customerId}, 
+            include: [{
+                model: Redemption,
+                attributes: ['name','description','expirationDate','points']}]});
         res.send(customer_redemption);
     }
     catch(error){
