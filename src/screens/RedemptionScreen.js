@@ -59,7 +59,7 @@ const RedemptionScreen = ({navigation}) => {
 
                       <View>
                         <Title style={styles.cardContentTitle}>{item.name}</Title>
-                        <Paragraph style={styles.cardContentDecsription}>{item.description}</Paragraph>
+                        <Paragraph style={styles.cardContentDescription}>{item.description}</Paragraph>
                       </View>
 
                     </Card.Content>
@@ -127,7 +127,7 @@ const styles = StyleSheet.create({
     marginLeft:20,
     color:"#1C9C9B",
   },
-    cardContentDecsription: {
+    cardContentDescription: {
       marginLeft:20,
     },
 });

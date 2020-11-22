@@ -6,19 +6,19 @@ import Icon from 'react-native-vector-icons/FontAwesome5';
 import { Context as CustomerRedemptionContext } from '../context/CustomerRedemptionContext';
 import { NavigationEvents } from 'react-navigation';
 
-renderStatus = (status) => {
+_renderStatus = (status) => {
   if(status == "A"){
       return(
-          <Paragraph style={styles.cardContentDecsription}>Available</Paragraph>
+          <Paragraph style={styles.cardContentDescription}>Available</Paragraph>
       );
   }else if(status == "R"){
     return (
-      <Paragraph style={styles.cardContentDecsription}t>Redeemed</Paragraph>
+      <Paragraph style={styles.cardContentDescription}>Redeemed</Paragraph>
     );
   }
   else{
       return(
-        <Paragraph style={styles.cardContentDecsription}>Expired</Paragraph>
+        <Paragraph style={styles.cardContentDescription}>Expired</Paragraph>
       );
   }
 };
@@ -61,8 +61,8 @@ const CustomerRedemptionScreen = ({navigation}) => {
 
                       <View>
                         <Title style={styles.cardContentTitle}>{item.redemption.name}</Title>
-                        <Paragraph style={styles.cardContentDecsription}>{item.redemption.description}</Paragraph>
-                        {this.renderStatus(item.status)}
+                        <Paragraph style={styles.cardContentDescription}>{item.redemption.description}</Paragraph>
+                        {this._renderStatus(item.status)}
                       </View>
 
                     </Card.Content>
@@ -130,7 +130,7 @@ const styles = StyleSheet.create({
     marginLeft:20,
     color:"#1C9C9B",
   },
-    cardContentDecsription: {
+    cardContentDescription: {
       marginLeft:20,
     },
 });
