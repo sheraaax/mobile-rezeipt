@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import { Avatar, Card, Title, Paragraph } from 'react-native-paper';
-import { StyleSheet, Text, View, TouchableOpacity, FlatList } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, FlatList, Alert } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { Context as RedemptionContext } from '../context/RedemptionContext';
@@ -39,14 +39,27 @@ const RedemptionScreen = ({navigation}) => {
           renderItem={({ item }) => {
             return (
               <View style={styles.card}>
-              < TouchableOpacity onPress={()=>console.log(createCustomerRedemption(3 , item.id))}>
+              < TouchableOpacity onPress={()=> {
+                Alert.alert(
+                  'Confirmation', 
+                  'Are you sure to redeem this reward?',
+                  [{
+                  text: 'Redeem',
+                  onPress: () => console.log(createCustomerRedemption(3 , item.id))
+                },
+                {
+                  text: 'Cancel',
+                  onPress: () => console.log("Cancel Pressed"),
+                  style: 'cancel'
+                }
+                ])}}>
                   <Card style ={styles.card}>
                     <Card.Content style={styles.cardContent}>
                       <Icon size={60} name="birthday-cake" color="grey"/>
 
                       <View>
                         <Title style={styles.cardContentTitle}>{item.name}</Title>
-                        <Paragraph style={styles.cardContentDecsription}>{item.description}</Paragraph>
+                        <Paragraph style={styles.cardContentDescription}>{item.description}</Paragraph>
                       </View>
 
                     </Card.Content>
@@ -114,7 +127,7 @@ const styles = StyleSheet.create({
     marginLeft:20,
     color:"#1C9C9B",
   },
-    cardContentDecsription: {
+    cardContentDescription: {
       marginLeft:20,
     },
 });

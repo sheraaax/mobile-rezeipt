@@ -6,10 +6,26 @@ import Icon from 'react-native-vector-icons/FontAwesome5';
 import { Context as CustomerRedemptionContext } from '../context/CustomerRedemptionContext';
 import { NavigationEvents } from 'react-navigation';
 
+_renderStatus = (status) => {
+  if(status == "A"){
+      return(
+          <Paragraph style={styles.cardContentDescription}>Available</Paragraph>
+      );
+  }else if(status == "R"){
+    return (
+      <Paragraph style={styles.cardContentDescription}>Redeemed</Paragraph>
+    );
+  }
+  else{
+      return(
+        <Paragraph style={styles.cardContentDescription}>Expired</Paragraph>
+      );
+  }
+};
+
 
 const CustomerRedemptionScreen = ({navigation}) => {
   const { state, fetchCustomerRedemptions } = useContext(CustomerRedemptionContext);
-  console.log(state);
 
   return (
     <KeyboardAwareScrollView>
@@ -38,14 +54,15 @@ const CustomerRedemptionScreen = ({navigation}) => {
           renderItem={({ item }) => {
             return (
               <View style={styles.card}>
-              < TouchableOpacity>
+              <TouchableOpacity onPress={()=>navigation.navigate('CustomerRedemptionDetail', {id: item.id})}>
                   <Card style ={styles.card}>
                     <Card.Content style={styles.cardContent}>
                       <Icon size={60} name="birthday-cake" color="grey"/>
 
                       <View>
-                        <Title style={styles.cardContentTitle}>{item.redemptionId}</Title>
-                        <Paragraph style={styles.cardContentDecsription}>{item.status}</Paragraph>
+                        <Title style={styles.cardContentTitle}>{item.redemption.name}</Title>
+                        <Paragraph style={styles.cardContentDescription}>{item.redemption.description}</Paragraph>
+                        {this._renderStatus(item.status)}
                       </View>
 
                     </Card.Content>
@@ -113,7 +130,7 @@ const styles = StyleSheet.create({
     marginLeft:20,
     color:"#1C9C9B",
   },
-    cardContentDecsription: {
+    cardContentDescription: {
       marginLeft:20,
     },
 });
