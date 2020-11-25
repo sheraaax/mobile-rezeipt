@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { StyleSheet, Text, View, ScrollView, FlatList } from 'react-native';
+import { StyleSheet, Text, View, ScrollView, FlatList, TouchableOpacity } from 'react-native';
 import { Button } from 'react-native-elements';
 import { SafeAreaView, NavigationEvents } from 'react-navigation';
 import { Card, Title, Paragraph, List } from 'react-native-paper';
@@ -9,13 +9,15 @@ import { Context as SalesContext } from '../context/SalesContext';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import phpUnserialize from 'phpunserialize';
 import jsonQuery from 'json-query';
+import { orderBy } from 'natural-orderby';
+//import { TouchableOpacity } from 'react-native-gesture-handler';
 
 
-const HomeScreen = () => {
+const HomeScreen = ({navigation}) => {
 
   const { logout } = useContext(AuthContext);
   const { state, fetchSales } = useContext(SalesContext);
-  
+
   const date = new Date().getDate();
   const month = new Date().getMonth();
   const year = new Date().getFullYear();
@@ -29,13 +31,14 @@ const HomeScreen = () => {
     return (
       <View>
         <Text style={styles.headline}>{monthString} Expenses</Text>
-        <Text style={styles.totalExpense}>RM100.00</Text>
+        <Text style={styles.totalExpense}>RM34.00</Text>
       </View>
     );
   }
 
 
   return (
+    <View style={{flex:1, backgroundColor:'white'}}>
     <KeyboardAwareScrollView>
       <View >
         <SafeAreaView>
@@ -52,18 +55,40 @@ const HomeScreen = () => {
                       const cart = phpUnserialize(item.cart);
                       const newTotalPrice = (Math.round(cart.totalPrice * 100) / 100).toFixed(2);
 
+                      //console.log(newTotalPrice);
+
                       var helpers = {
                         contains: function (input, arg) {
                           return Array.isArray(input) && input.some(x => x.includes(arg))
                         }
                       }
 
-                      const categories = jsonQuery('items[**][*item][*attributes][*category_id]', {
+                      // const categories = jsonQuery('items[**][*item][*attributes][*category_id]', {
+                      //   data: cart,
+                      //   locals: helpers
+                      //   }).value;
+
+                      const itemNames = jsonQuery('items[**][*item][*attributes][*name]', {
                         data: cart,
                         locals: helpers
                         }).value;
 
-                        console.log(categories, categories[0]);
+                      const itemPrices = jsonQuery('items[**][*item][*attributes][*price]', {
+                        data: cart,
+                        locals: helpers
+                        }).value; 
+                        
+                      const itemCategories = jsonQuery('items[**][*item][*attributes][*category_id]', {
+                        data: cart,
+                        locals: helpers
+                        }).value;   
+                        
+                      const item_ = jsonQuery('items[**][*item][*attributes]', {
+                        data: cart,
+                        locals: helpers
+                        }).value;  
+
+                      //console.log(itemCategories);
 
 
                       const t = item.created_at.split(/[- : T Z .]/);
@@ -75,6 +100,7 @@ const HomeScreen = () => {
                       const t_todaysDate = new Date(t_year, t_month, t_date)
                       const t_monthString =  t_todaysDate.toLocaleString('default', { month: 'long' });
 
+
                       return (
                         <View>
 
@@ -83,16 +109,18 @@ const HomeScreen = () => {
                           <Text style={styles.totalPrice}></Text>
                         </View>
                       
-                        <Card style={styles.card}>
-                          <Card.Content style={styles.cardContent}>
-                            <Icon size={40} name="store-alt" color="grey"/>
-                            <View >
-                              <Title style={styles.cardContentTitle}>Xen Lit Trading</Title>
-                              <Paragraph style={styles.cardContentTimestamp}>{t_hours}:{t_minutes}</Paragraph>
-                            </View>
-                              <Paragraph style={styles.cardContentTotal}>RM{newTotalPrice}</Paragraph>
-                          </Card.Content>
-                        </Card>  
+                      <TouchableOpacity onPress={ () => navigation.navigate('SalesDetails')}>
+                          <Card style={styles.card}>
+                            <Card.Content style={styles.cardContent}>
+                              <Icon size={40} name="store-alt" color="grey"/>
+                              <View >
+                                <Title style={styles.cardContentTitle}>Kedai Runcit Yam</Title>
+                                <Paragraph style={styles.cardContentTimestamp}>{t_hours}:{t_minutes}</Paragraph>
+                              </View>
+                                <Paragraph style={styles.cardContentTotal}>RM{newTotalPrice}</Paragraph>
+                            </Card.Content>
+                          </Card> 
+                        </TouchableOpacity> 
 
                       </View>
 
@@ -112,6 +140,7 @@ const HomeScreen = () => {
         </SafeAreaView>
       </View>
     </KeyboardAwareScrollView>
+    </View>
   )
 };
 
