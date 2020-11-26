@@ -57,20 +57,25 @@ const SalesDetailsScreen = ({route}) => {
     <KeyboardAwareScrollView>
         <View>
             <SafeAreaView>
-            <View>
-                <Text style={styles.timestamp}>Date: 16 Nov 2020</Text>
-                <Text style={styles.timestamp}>Time: 15:23:22</Text>
-            </View>
-
-            <View style={styles.storeBorder}>
-                <Text style={styles.storeName}>Kedai Runcit Yam</Text>
+            
+            <View style={{alignItems:'center'}}>
+                <View style={styles.storeBorder}>
+                    <Text style={styles.storeName}>Kedai Runcit Yam</Text>
+                </View>
             </View>
 
             <View>
                 <Text style={styles.totalPriceHeadline}>Total Price</Text>
-                <View style={styles.totalPriceBorder}>
-                    <Text style={styles.totalPrice}>RM{(Math.round(cart.totalPrice * 100) / 100).toFixed(2)}</Text>
+                <View style={{alignItems:'center'}}>
+                    <View style={styles.totalPriceBorder}>
+                        <Text style={styles.totalPrice}>RM{(Math.round(cart.totalPrice * 100) / 100).toFixed(2)}</Text>
+                    </View>
                 </View>
+            </View>
+
+            <View style={{flexDirection:'row', justifyContent:'space-between'}}>
+                <Text style={styles.timestamp}>Date: 16 Nov 2020</Text>
+                <Text style={styles.timestamp}>Time: 15:23:22</Text>
             </View>
 
                 <FlatList 
@@ -143,9 +148,7 @@ const SalesDetailsScreen = ({route}) => {
 
 const styles = StyleSheet.create({
     timestamp: {
-        fontSize:18,
-        marginLeft:5,
-        marginTop:7,
+        margin:20
     },
     storeName: {
         padding:15,
@@ -154,8 +157,9 @@ const styles = StyleSheet.create({
     },
     storeBorder: {
         backgroundColor:"#1C9C9B",
-        marginTop:10,
+        marginTop:30,
         marginBottom:5,
+        width: 320,
         alignItems:'center',
         borderRadius:30,
         shadowColor:"grey",
@@ -168,21 +172,21 @@ const styles = StyleSheet.create({
 
     },
     totalPriceHeadline: {
-        fontSize:18,
-        marginLeft:5,
-        marginTop:7,
+        fontSize:19,
+        marginLeft:25,
+        marginTop:25,
+        marginBottom:5,
         fontWeight:'bold'
     },
     totalPrice: {
-        fontSize:33,
+        fontSize:30,
         fontWeight:'bold',
-        padding:5,
+        padding:7,
     },
     totalPriceBorder: {
         backgroundColor:"#1C9C9B",
         marginTop:5,
         marginBottom:15,
-        marginLeft:25,
         alignItems:'center',
         width:250,
         borderRadius:30,

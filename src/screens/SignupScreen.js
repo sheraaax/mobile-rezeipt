@@ -22,7 +22,7 @@ const SignupScreen = ({ navigation }) => {
             autoCapitalize="none"
             autoCorrect={false}
             placeholder="test@example.com"
-            placeholderTextColor="white"
+            placeholderTextColor="grey"
             value={email}
             onChangeText={setEmail}
             />
@@ -35,7 +35,7 @@ const SignupScreen = ({ navigation }) => {
             autoCapitalize="none"
             autoCorrect={false}
             placeholder="password"
-            placeholderTextColor="white"
+            placeholderTextColor="grey"
             value={password}
             onChangeText={setPassword}
             />
@@ -65,19 +65,28 @@ const SignupScreen = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f2f2f2',
+    backgroundColor: 'white',
     alignItems: 'center',
     justifyContent: 'center',
     marginBottom:50
   },
   inputView:{
     width:"80%",
-    backgroundColor:"#1C9C9B",
+    backgroundColor:"white",
     borderRadius:25,
     height:50,
     marginBottom:20,
     justifyContent:"center",
-    padding:20
+    padding:20,
+    borderColor:'grey',
+    borderWidth:0.5,
+    shadowColor:"grey",
+    shadowOffset: {
+      width: 0,
+      height: 3
+    },
+    shadowRadius:5,
+    shadowOpacity:1.0
   },
   inputText:{
     height:50,
@@ -96,7 +105,14 @@ const styles = StyleSheet.create({
     alignItems:"center",
     justifyContent:"center",
     marginTop:40,
-    marginBottom:10
+    marginBottom:10,
+    shadowColor:"#25cecd",
+    shadowOffset: {
+      width: 0,
+      height: 4
+    },
+    shadowRadius:5,
+    shadowOpacity:1.0
   },
   loginText:{
     color:"white",
@@ -104,7 +120,8 @@ const styles = StyleSheet.create({
   },
   signupText:{
     color:"#596B74",
-    fontSize:15
+    fontSize:15,
+    marginTop:15
   },
   errorMessage:{
     fontSize: 16,

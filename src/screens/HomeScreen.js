@@ -55,7 +55,7 @@ const HomeScreen = ({navigation}) => {
                       const cart = phpUnserialize(item.cart);
                       const newTotalPrice = (Math.round(cart.totalPrice * 100) / 100).toFixed(2);
 
-                      //console.log(newTotalPrice);
+                      //console.log(cart.totalQty);
 
                       var helpers = {
                         contains: function (input, arg) {
@@ -198,12 +198,13 @@ const styles = StyleSheet.create({
   },
   cardContentTimestamp: {
     marginLeft:20,
+    fontSize:13
   },
   cardContentTotal: {
     width:80,
     marginLeft:20,
     marginRight:20,
-    fontSize:16,
+    fontSize:15,
     fontWeight:"bold",
   }
 });
