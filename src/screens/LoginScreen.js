@@ -1,5 +1,7 @@
 import React, { useState, useContext } from 'react';
 import { StyleSheet, Text, View, TextInput, TouchableOpacity, Image, FlatList } from 'react-native';
+import Icon from 'react-native-vector-icons/FontAwesome';
+import { Input } from 'react-native-elements';
 import { NavigationEvents } from 'react-navigation';
 import { Context as AuthContext } from '../context/AuthContext';
 
@@ -15,27 +17,39 @@ const LoginScreen = ({navigation}) => {
         <Image style={styles.logo} source={require('../../assets/rezeiptlogo.png')} />
 
         <View style={styles.inputView} >
-          <TextInput
+          <Input
             style={styles.inputText}
             autoCapitalize="none"
             autoCorrect={false}
+            label="Email"
             placeholder="test@example.com"
             placeholderTextColor="grey"
             value={email}
             onChangeText={setEmail}
+            leftIcon={<Icon
+                name='envelope'
+                size={20}
+                color='grey'
+              />}
             />
         </View>
 
         <View style={styles.inputView} >
-          <TextInput
+          <Input
             style={styles.inputText}
             secureTextEntry
             autoCapitalize="none"
             autoCorrect={false}
+            label="Password"
             placeholder="password"
             placeholderTextColor="grey"
             value={password}
             onChangeText={setPassword}
+            leftIcon={<Icon
+                name='lock'
+                size={30}
+                color='grey'
+              />}
             />
         </View>
 
@@ -72,9 +86,6 @@ const styles = StyleSheet.create({
     marginBottom:50
   },
   logo:{
-    //fontWeight:"bold",
-    //fontSize:50,
-    //color:"#fb5b5a",
     marginBottom:10
   },
   inputView:{
@@ -82,23 +93,14 @@ const styles = StyleSheet.create({
     backgroundColor:"white",
     borderRadius:25,
     height:50,
-    marginBottom:20,
+    marginBottom:50,
     justifyContent:"center",
     padding:20,
-    borderColor:'grey',
-    borderWidth:0.5,
-    shadowColor:"grey",
-    shadowOffset: {
-      width: 0,
-      height: 3
-    },
-    shadowRadius:5,
-    shadowOpacity:1.0
   },
   inputText:{
     height:50,
     color:"black",
-    textAlign: 'center'
+    marginLeft:15
   },
   forgot:{
     color:"#596B74",
@@ -112,7 +114,7 @@ const styles = StyleSheet.create({
     height:50,
     alignItems:"center",
     justifyContent:"center",
-    marginTop:40,
+    marginTop:10,
     marginBottom:10,
     shadowColor:"#25cecd",
     shadowOffset: {
