@@ -12,6 +12,7 @@ import ScanQRScreen from './src/screens/ScanQRScreen';
 import SignupScreen from './src/screens/SignupScreen';
 import CustomerRedemptionDetailScreen from './src/screens/CustomerRedemptionDetailScreen';
 import ResolveAuthScreen from './src/screens/ResolveAuthScreen';
+import SalesDetailsScreen from './src/screens/SalesDetailsScreen';
 import { Provider as AuthProvider } from './src/context/AuthContext';
 import { Provider as RedemptionProvider } from './src/context/RedemptionContext';
 import { Provider as CustomerRedemptionProvider } from './src/context/CustomerRedemptionContext';
@@ -23,6 +24,21 @@ const RedemptionFlow = createStackNavigator({
   Redemption: RedemptionScreen,
   CustomerRedemption:  CustomerRedemptionScreen,
   CustomerRedemptionDetail: CustomerRedemptionDetailScreen
+});
+
+const salesDetailsFlow = createStackNavigator({
+    Home: {
+      screen: HomeScreen,
+      navigationOptions: {
+        headerShown: false,
+      }
+    },
+    SalesDetails: {
+      screen: SalesDetailsScreen,
+      navigationOptions: {
+        title: 'Receipt Details'
+      }
+    },
 });
 
 RedemptionFlow.navigationOptions = {
@@ -50,14 +66,25 @@ const switchNavigator = createSwitchNavigator({
     },
   }),
   mainFlow: createBottomTabNavigator({
+    // Home: {
+    //   screen: HomeScreen,
+    //   navigationOptions:{  
+    //     tabBarLabel:'Home',  
+    //     tabBarIcon:({tintColor})=>(  
+    //         <Icon name="home" color={tintColor} size={25}/>  
+    //     )  
+    //   }  
+    // },
+
     Home: {
-      screen: HomeScreen,
-      navigationOptions:{  
-        tabBarLabel:'Home',  
+      screen: salesDetailsFlow,
+      navigationOptions: {
+        headerShown: false,
+        tabBarLabel:'Home',
         tabBarIcon:({tintColor})=>(  
-            <Icon name="home" color={tintColor} size={25}/>  
-        )  
-      }  
+                 <Icon name="home" color={tintColor} size={25}/>  
+          )  
+      }
     },
 
     Analysis: {

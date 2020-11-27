@@ -16,35 +16,35 @@ const AnalysisScreen = () => {
     {
       name: "Food",
       population: 4,
-      color: "rgba(131, 167, 234, 1)",
+      color: "#0eaaa9",
       legendFontColor: "#7F7F7F",
       legendFontSize: 15
     },
     {
       name: "Drinks",
       population: 10,
-      color: "black",
+      color: "#5c5c5c",
       legendFontColor: "#7F7F7F",
       legendFontSize: 15
     },
     {
       name: "Stationary",
       population: 2,
-      color: "red",
+      color: "#2bd9d8",
       legendFontColor: "#7F7F7F",
       legendFontSize: 15
     },
     {
       name: "Clothes",
       population: 5,
-      color: "#777FFF",
+      color: "#239594",
       legendFontColor: "#7F7F7F",
       legendFontSize: 15
     },
     {
       name: "Grocery",
       population: 9,
-      color: "rgb(0, 0, 255)",
+      color: "#467271",
       legendFontColor: "#7F7F7F",
       legendFontSize: 15
     }
@@ -57,7 +57,9 @@ const AnalysisScreen = () => {
           <View style={styles.topTitle}>
             <View style={{marginLeft:20}}>
               <Text style={styles.titleTotal}>Total Expense</Text>
-              <Text style={styles.titlePrice}>RM100.00</Text>
+              <View style={styles.totalExpenseContainer}>
+                <Text style={styles.titlePrice}>RM100.00</Text>
+              </View>
             </View>
             <Text style={styles.month}>Nov 20</Text>
           </View>
@@ -81,38 +83,7 @@ const AnalysisScreen = () => {
             paddingLeft="30"
             absolute
           />
-
-            <FlatList
-              data={state}
-              keyExtractor={item => item.id}
-              renderItem={({item}) => {
-                const cart = phpUnserialize(item.cart);
-              
-                var helpers = {
-                  contains: function (input, arg) {
-                    return Array.isArray(input) && input.some(x => x.includes(arg))
-                  }
-                }
-
-                const category = jsonQuery('items[**][*item][*attributes][*category_id]', {
-                  data: cart,
-                  locals: helpers
-                  }).value;
-
-                console.log(category[0]);
-
-                // console.log(jsonQuery('items[**][*item][*attributes][category_id=1].category_id', {
-                //   data: cart,
-                //   locals: helpers
-                // }).value);
-
-                <View>
-                  <Text>{category[0]}</Text>
-                </View>
-
-
-              }}
-            />
+          
 
       </SafeAreaView>
     </View>
@@ -129,11 +100,25 @@ const styles = StyleSheet.create({
   },
   titleTotal: {
     fontSize:25,
+    marginBottom:10,
   },
   titlePrice: {
     fontSize:26,
     fontWeight:"bold",
-    color:"#1C9C9B",
+  },
+  totalExpenseContainer: {
+    backgroundColor:"#1C9C9B",
+    padding:10,
+    width:200,
+    alignItems:'center',
+    borderRadius:30,
+    shadowColor:"grey",
+    shadowOffset: {
+      width: 0,
+      height: 3
+    },
+    shadowRadius:5,
+    shadowOpacity:1.0
   },
   month: {
     width:60,

@@ -30,6 +30,7 @@ const CustomerRedemptionScreen = ({navigation}) => {
   const { state, fetchCustomerRedemptions } = useContext(CustomerRedemptionContext);
   
   return (
+    <KeyboardAwareScrollView>
       <View style={styles.container}>
         <KeyboardAwareScrollView>
           <Text style={styles.totalReceipts}>1120</Text>
