@@ -1,6 +1,5 @@
 import React, { useContext } from 'react';
 import { StyleSheet, Text, View, ScrollView, FlatList } from 'react-native';
-import { Button } from 'react-native-elements';
 import { SafeAreaView, NavigationEvents } from 'react-navigation';
 import { Card, Title, Paragraph, List } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/FontAwesome5';
@@ -10,7 +9,7 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import phpUnserialize from 'phpunserialize';
 import jsonQuery from 'json-query';
 
-const SalesDetailsScreen = ({route, navigation}) => {
+const SalesDetailsScreen = ({navigation}) => {
 
     const { state, fetchSales } = useContext(SalesContext);
 
@@ -25,14 +24,23 @@ const SalesDetailsScreen = ({route, navigation}) => {
     const t_todaysDate = new Date(t_year, t_month, t_date)
     const t_monthString =  t_todaysDate.toLocaleString('default', { month: 'long' });
 
-    // const boughtItems = cart.items;
-    // console.log(boughtItems);
-
     const helpers = {
         contains: function (input, arg) {
           return Array.isArray(input) && input.some(x => x.includes(arg))
         }
     };
+
+    const items_ = jsonQuery('items[**]', {
+        data: cart,
+        locals: helpers
+    }).value; 
+    //console.log(items_);
+
+    const itemQuantities = jsonQuery('items[**][*qty]', {
+        data: cart,
+        locals: helpers
+    }).value; 
+    //console.log(itemQuantities);
 
     const items = jsonQuery('items[**][*item][*attributes]', {
         data: cart,
@@ -46,17 +54,17 @@ const SalesDetailsScreen = ({route, navigation}) => {
     }).value; 
     //console.log(itemCategories);
 
-    // const itemNames = jsonQuery('items[**][*item][*attributes][*name]', {
-    //     data: cart,
-    //     locals: helpers
-    // }).value; 
+    const itemNames = jsonQuery('items[**][*item][*attributes][*name]', {
+        data: cart,
+        locals: helpers
+    }).value; 
     //console.log(itemNames);
 
     const itemDescriptions = jsonQuery('items[**][*item][*attributes][*description]', {
         data: cart,
         locals: helpers
     }).value; 
-    console.log(itemDescriptions);
+    //console.log(itemDescriptions);
 
     const itemPrices = jsonQuery('items[**][*item][*attributes][*price]', {
         data: cart,
@@ -65,15 +73,40 @@ const SalesDetailsScreen = ({route, navigation}) => {
     //console.log(itemPrices);
         
 
-    function renderItemName() {
+    function checkCategory(category_id) {
+        switch (category_id) {
+            case 1:
+                return 'Food';
+            case 2:
+                return 'Drinks';
+            case 3:
+                return 'Fruits';
+            default:
+                return category_id;
+        }
+    }
 
-        const itemNames = jsonQuery('items[**][*item][*attributes][*name]', {
-            data: cart,
-            locals: helpers
-        }).value;
+    function checkCategoryIcon(category_id) {
+        switch (category_id) {
+            case 1:
+                return (
+                    <Icon size={20} name="utensils" color="#1C9C9B"/>
+                );
+            case 2:
+                return (
+                    <Icon size={20} name="glass-martini-alt" color="#1C9C9B"/>
+                );
+            case 3:
+                return (
+                    <Icon size={20} name="lemon" color="#1C9C9B"/>
+                );
+            default:
+                return (
+                    <Icon size={20} name="angle-right" color="#1C9C9B"/>
+                );
+        }
+    }
 
-        return itemNames.map((itemName,i) => <Text style={{marginLeft:10,color:'green'}} key={i}>{itemName}</Text> )
-    };
     
 
     return (
@@ -102,9 +135,43 @@ const SalesDetailsScreen = ({route, navigation}) => {
                 <Text style={styles.timestamp}>Time: {t_hours}:{t_minutes}:{t_seconds}</Text>
             </View>
 
-        {renderItemName()}
+            <FlatList
+                data={items}
+                keyExtractor={item => item.name}
+                renderItem={({item})=> {  
+                    
+                return(
+                    
+                <Card style={styles.card}>
+                    <Card.Content style={styles.cardContent}>
 
-                
+                        <View style={{flexDirection:'row', alignItems:'flex-start', width:175,}}>
+                            <View style={{marginTop:7}}>
+                                {checkCategoryIcon(item.category_id)}
+                            </View>
+                            <View style={{marginLeft:7}}>
+                                <Title >{checkCategory(item.category_id)}</Title>
+                                <Paragraph>{item.description}</Paragraph>
+                            </View>
+                        </View>
+                        
+                        <View style={{ width:70}}>
+                            <Paragraph>Price:</Paragraph>
+                            <Paragraph>Subtotal:</Paragraph>
+                        </View>
+                        
+                        <View style={{ width:80, alignItems:'center'}}>
+                            <Paragraph>RM{(Math.round(item.price * 100) / 100).toFixed(2)}</Paragraph>
+                            <Paragraph>RM{(Math.round(item.price * 100) / 100).toFixed(2)}</Paragraph>
+                        </View>
+
+                    </Card.Content>
+                </Card> 
+
+                );
+
+                }}
+            />
 
 
             </SafeAreaView>
