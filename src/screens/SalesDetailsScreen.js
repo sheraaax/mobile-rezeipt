@@ -10,13 +10,23 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import phpUnserialize from 'phpunserialize';
 import jsonQuery from 'json-query';
 
-const SalesDetailsScreen = ({route}) => {
+const SalesDetailsScreen = ({route, navigation}) => {
 
     const { state, fetchSales } = useContext(SalesContext);
-    
-    const cart = phpUnserialize(state[0].cart);
-    //console.log('totalPrice cart: ', cart.totalPrice);
-    //console.log(cart.items);
+
+    const cart = navigation.getParam('cart');
+    const t = navigation.getParam('t');
+    const t_date = t[2];
+    const t_month = t[1]-1;
+    const t_year = t[0];
+    const t_hours = t[3];
+    const t_minutes = t[4];
+    const t_seconds = t[5];
+    const t_todaysDate = new Date(t_year, t_month, t_date)
+    const t_monthString =  t_todaysDate.toLocaleString('default', { month: 'long' });
+
+    // const boughtItems = cart.items;
+    // console.log(boughtItems);
 
     const helpers = {
         contains: function (input, arg) {
@@ -24,22 +34,36 @@ const SalesDetailsScreen = ({route}) => {
         }
     };
 
-    const itemPrices = jsonQuery('items[**][*item][*attributes][*price]', {
-        data: cart,
-        locals: helpers
-    }).value; 
-        
-    const item_ = jsonQuery('items[**][*item][*attributes]', {
-        data: cart,
-        locals: helpers
-    }).value; 
-    console.log(item_);
-        
-    const items = jsonQuery('items[**]', {
+    const items = jsonQuery('items[**][*item][*attributes]', {
         data: cart,
         locals: helpers
     }).value; 
     //console.log(items);
+
+    const itemCategories = jsonQuery('items[**][*item][*attributes][*category_id]', {
+        data: cart,
+        locals: helpers
+    }).value; 
+    //console.log(itemCategories);
+
+    // const itemNames = jsonQuery('items[**][*item][*attributes][*name]', {
+    //     data: cart,
+    //     locals: helpers
+    // }).value; 
+    //console.log(itemNames);
+
+    const itemDescriptions = jsonQuery('items[**][*item][*attributes][*description]', {
+        data: cart,
+        locals: helpers
+    }).value; 
+    console.log(itemDescriptions);
+
+    const itemPrices = jsonQuery('items[**][*item][*attributes][*price]', {
+        data: cart,
+        locals: helpers
+    }).value; 
+    //console.log(itemPrices);
+        
 
     function renderItemName() {
 
@@ -74,69 +98,13 @@ const SalesDetailsScreen = ({route}) => {
             </View>
 
             <View style={{flexDirection:'row', justifyContent:'space-between'}}>
-                <Text style={styles.timestamp}>Date: 16 Nov 2020</Text>
-                <Text style={styles.timestamp}>Time: 15:23:22</Text>
+                <Text style={styles.timestamp}>Date: {t_date} {t_monthString} {t_year}</Text>
+                <Text style={styles.timestamp}>Time: {t_hours}:{t_minutes}:{t_seconds}</Text>
             </View>
 
-                <FlatList 
-                    data={item_}
-                    keyExtractor={(item,i) => i}
-                    renderItem={({item}) => {
-                        console.log('inside flatlist:' +item.name);
+        {renderItemName()}
 
-                        function checkItemCategory() {
-                            switch(item.category_id) {
-                                case 1:
-                                    return (
-                                        <View style={{flexDirection:'row', marginBottom:10 }}>
-                                            <Icon size={25} name="utensils" color="grey"/>
-                                            <Text style={styles.categoryCardTitle}>Food</Text>
-                                        </View>
-                                        );
-                                case 2:
-                                    return (
-                                        <View style={{flexDirection:'row', marginBottom:10}}>
-                                            <Icon size={25} name="wine-glass" color="grey"/>
-                                            <Text style={styles.categoryCardTitle}>Drinks</Text>
-                                        </View>
-                                        );
-                                default:
-                                    return item.category_id;
-                            }
-                        }
-
-                        return(
-                        <View>
-                            <Card style={styles.card}>
-                                <Card.Content>
                 
-                                    {checkItemCategory()}
-                                    
-                                    <View style={{flexDirection:'row'}}>
-                                        <View style={{width:180 }}>
-                                            <Title>{item.name} x1</Title>
-                                            <Paragraph>{item.description}</Paragraph>
-                                        </View>
-                                        <View style={{width:70, marginLeft:5, justifyContent:'flex-end' }}>
-                                            <Paragraph>Price:</Paragraph>
-                                            <Paragraph>Subtotal:</Paragraph>
-                                        </View>
-                                        <View style={{width:85, marginLeft:5, justifyContent:'flex-end', alignItems:'center' }}>
-                                            <Paragraph>RM{(Math.round(item.price * 100) / 100).toFixed(2)}</Paragraph>
-                                            <Paragraph style={{fontWeight:'bold'}}>RM{(Math.round(item.price * 100) / 100).toFixed(2)}</Paragraph>
-                                        </View>
-                                    </View>
-                                    <Paragraph></Paragraph>
-                                </Card.Content>
-                            </Card> 
-                                
-                            {/* {renderItemName()} */}
-                            
-
-                        </View>
-                        );
-                    }}
-                />
 
 
             </SafeAreaView>
