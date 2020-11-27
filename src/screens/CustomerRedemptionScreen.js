@@ -1,10 +1,12 @@
 import React, { useContext } from 'react';
 import { Avatar, Card, Title, Paragraph } from 'react-native-paper';
-import { StyleSheet, Text, View, TouchableOpacity, FlatList } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, FlatList, Dimensions } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { Context as CustomerRedemptionContext } from '../context/CustomerRedemptionContext';
 import { NavigationEvents } from 'react-navigation';
+
+const { height, width } = Dimensions.get('window');
 
 _renderStatus = (status) => {
   if(status == "A"){
@@ -26,15 +28,13 @@ _renderStatus = (status) => {
 
 const CustomerRedemptionScreen = ({navigation}) => {
   const { state, fetchCustomerRedemptions } = useContext(CustomerRedemptionContext);
-
-
+  
   return (
     <KeyboardAwareScrollView>
-
       <View style={styles.container}>
-        
-        <Text style={styles.totalReceipts}>1120</Text>
-        <Text style={styles.headline}>Receipts Collected</Text>
+        <KeyboardAwareScrollView>
+          <Text style={styles.totalReceipts}>1120</Text>
+          <Text style={styles.headline}>Receipts Collected</Text>
 
       <View style={styles.navigation}>
 
@@ -49,7 +49,7 @@ const CustomerRedemptionScreen = ({navigation}) => {
       </View>
 
       <View>
-        <NavigationEvents onWillFocus={fetchCustomerRedemptions} />
+        <NavigationEvents onWillFocus={fetchCustomerRedemptions}/>
         <FlatList
           data={state}
           keyExtractor={item => item.id.toString()}
@@ -76,22 +76,22 @@ const CustomerRedemptionScreen = ({navigation}) => {
         />
       </View>
 
-      </View>
       </KeyboardAwareScrollView> 
+      </View>
        )
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "space-between",
-    backgroundColor: "#fff",
-    padding: 10
+    backgroundColor: "white",
+    height:height-100,
+    paddingTop: 25,
+    paddingHorizontal: 10
   },
 
   totalReceipts: {
     color:"#1C9C9B",
-    marginTop:30,
     fontSize:50,
     fontWeight:"bold",
     textAlign: 'center',

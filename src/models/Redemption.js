@@ -27,6 +27,14 @@ const Redemption = db.define('redemption', {
         type: Sequelize.DATE,
         allowNull: false
     },
+    discountUnit : {
+        type: Sequelize.INTEGER,
+        allowNull: false
+    },
+    couponCode : {
+        type: Sequelize.STRING,
+        allowNull: false
+    }
 },{
     tableName: 'redemption',
     timestamps: false
