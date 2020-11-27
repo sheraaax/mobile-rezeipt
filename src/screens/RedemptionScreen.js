@@ -1,11 +1,13 @@
 import React, { useContext } from 'react';
 import { Avatar, Card, Title, Paragraph } from 'react-native-paper';
-import { StyleSheet, Text, View, TouchableOpacity, FlatList, Alert } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, FlatList, Alert, Dimensions, ScrollView } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { Context as RedemptionContext } from '../context/RedemptionContext';
 import { Context as CustomerRedemptionContext } from '../context/CustomerRedemptionContext';
 import { NavigationEvents } from 'react-navigation';
+
+const { height, width } = Dimensions.get('window');
 
 
 const RedemptionScreen = ({navigation}) => {
@@ -13,8 +15,8 @@ const RedemptionScreen = ({navigation}) => {
   const { data, createCustomerRedemption } = useContext(CustomerRedemptionContext);
 
   return (
-    <KeyboardAwareScrollView>
-      <View style={styles.container}>
+    <View style={styles.container}>
+      <KeyboardAwareScrollView>
         
         <Text style={styles.totalReceipts}>1120</Text>
         <Text style={styles.headline}>Receipts Collected</Text>
@@ -45,7 +47,7 @@ const RedemptionScreen = ({navigation}) => {
                   'Are you sure to redeem this reward?',
                   [{
                   text: 'Redeem',
-                  onPress: () => console.log(createCustomerRedemption(3 , item.id))
+                  onPress: () => console.log(createCustomerRedemption(2 , item.id))
                 },
                 {
                   text: 'Cancel',
@@ -70,23 +72,22 @@ const RedemptionScreen = ({navigation}) => {
           }}
         />
       </View>
-
+      </KeyboardAwareScrollView>
       </View>
-      </KeyboardAwareScrollView> 
        )
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "space-between",
-    backgroundColor: "#fff",
-    padding: 10
+    backgroundColor: "white",
+    height:height-100,
+    paddingTop: 25,
+    paddingHorizontal: 10
   },
 
   totalReceipts: {
     color:"#1C9C9B",
-    marginTop:30,
     fontSize:50,
     fontWeight:"bold",
     textAlign: 'center',
@@ -112,8 +113,8 @@ const styles = StyleSheet.create({
   },
 
   card: {
-    marginTop:5,
-    marginBottom:5,
+    margin:3,
+    borderRadius:10,
   },
 
   cardContent: {
@@ -127,9 +128,9 @@ const styles = StyleSheet.create({
     marginLeft:20,
     color:"#1C9C9B",
   },
-    cardContentDescription: {
-      marginLeft:20,
-    },
+  cardContentDescription: {
+    marginLeft:20,
+  },
 });
 
 export default RedemptionScreen;
