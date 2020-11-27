@@ -32,7 +32,7 @@ const CustomerRedemptionScreen = ({navigation}) => {
   return (
     <KeyboardAwareScrollView>
       <View style={styles.container}>
-        <KeyboardAwareScrollView>
+        
           <Text style={styles.totalReceipts}>1120</Text>
           <Text style={styles.headline}>Receipts Collected</Text>
 
@@ -75,9 +75,10 @@ const CustomerRedemptionScreen = ({navigation}) => {
           }}
         />
       </View>
+      </View>
 
       </KeyboardAwareScrollView> 
-      </View>
+      
        )
 };
 

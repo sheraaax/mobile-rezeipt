@@ -21,9 +21,24 @@ import { setNavigator } from './src/navigationRef';
 import CustomerRedemptionScreen from './src/screens/CustomerRedemptionScreen';
 
 const RedemptionFlow = createStackNavigator({
-  Redemption: RedemptionScreen,
-  CustomerRedemption:  CustomerRedemptionScreen,
-  CustomerRedemptionDetail: CustomerRedemptionDetailScreen
+  Redemption: {
+    screen: RedemptionScreen,
+    navigationOptions: {
+      title: 'Rewards Available',
+    }
+  },
+  CustomerRedemption:  {
+    screen: CustomerRedemptionScreen,
+    navigationOptions: {
+      title: 'Redeemed',
+    }
+  },
+  CustomerRedemptionDetail: {
+    screen: CustomerRedemptionDetailScreen,
+    navigationOptions: {
+      title: 'Redemption Code',
+    }
+  },
 });
 
 const salesDetailsFlow = createStackNavigator({
