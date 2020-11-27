@@ -24,10 +24,14 @@ const CustomerRedemptionDetailScreen = ({navigation}) => {
                 <Paragraph style={styles.cardContentDescription}>{redemption.redemption.description}</Paragraph>
                 <Paragraph style={styles.cardContentDescription}>Claimed at : {redemption.createdAt}</Paragraph>
                 <Paragraph style={styles.cardContentDescription}>Expiry Date : {redemption.redemption.expirationDate}</Paragraph>
-                <Paragraph style={styles.cardContentDescription}>Scan QR Code below to redeem your rewards!</Paragraph>    
+                <Paragraph style={styles.cardContentDescription}>Show the coupon code below when making payment</Paragraph>    
             </View>
 
-            <Image style={styles.qrCode} source = {{uri:'https://www.disabled-world.com/pics/1/dw-qr-code.png'}}/>
+            <Card style ={styles.card}>
+              <Card.Content style={styles.cardContent}>
+              <Text style={{ color:"white", fontWeight:"bold",fontSize: 30 }}>{redemption.redemption.couponCode}</Text>
+              </Card.Content>
+            </Card>
       </View>
     
 )};
@@ -37,7 +41,6 @@ const styles = StyleSheet.create({
     width:WIDTH,
     height: HEIGHT,
     justifyContent: 'center',
-    alignItems: 'center',
     backgroundColor: "white",
     flex: 1
   },
@@ -57,12 +60,18 @@ const styles = StyleSheet.create({
   cardContentDescription: {
       textAlign: "center"
   },
-  qrCode: {
-    alignItems: 'center',
-    marginTop: 15, 
-    width: 150, 
-    height: 150
-  }
+  card: {
+    margin:10,
+    borderRadius:10,
+    alignItems:"center",
+    backgroundColor: "#1C9C9B",
+  },
+
+  cardContent: {
+    flexDirection:"row",
+    alignItems:"flex-start",
+    justifyContent:"center",
+  },
 
 });
 
