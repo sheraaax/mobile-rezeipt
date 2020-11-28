@@ -18,7 +18,7 @@ router.get('/sales', async (req, res) => {
 
     const customerId = req.customer.id;
     console.log(customerId);
-    const sales = await Sales.findAll({ where: { customerId }, include: [Customer] });
+    const sales = await Sales.findAll({ where: { customerId }, include: [Customer], order: [['created_at', 'DESC']] });
 
     res.send(sales);
 });

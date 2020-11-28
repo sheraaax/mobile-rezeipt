@@ -1,6 +1,9 @@
 import React, { useContext } from 'react';
 import { View, StyleSheet, Text, Dimensions } from 'react-native';
 import { SafeAreaView, NavigationEvents } from 'react-navigation';
+import { Card, Title, Paragraph, List } from 'react-native-paper';
+import Icon from 'react-native-vector-icons/FontAwesome5';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { PieChart } from "react-native-chart-kit";
 import { Context as SalesContext } from '../context/SalesContext';
 import phpUnserialize from 'phpunserialize';
@@ -28,7 +31,7 @@ const AnalysisScreen = () => {
       legendFontSize: 15
     },
     {
-      name: "Stationary",
+      name: "Fruits",
       population: 2,
       color: "#2bd9d8",
       legendFontColor: "#7F7F7F",
@@ -52,13 +55,14 @@ const AnalysisScreen = () => {
 
   return (
     <View>
+      <KeyboardAwareScrollView>
       <SafeAreaView>
         <NavigationEvents onWillFocus={fetchSales} />
           <View style={styles.topTitle}>
             <View style={{marginLeft:20}}>
               <Text style={styles.titleTotal}>Total Expense</Text>
               <View style={styles.totalExpenseContainer}>
-                <Text style={styles.titlePrice}>RM100.00</Text>
+                <Text style={styles.titlePrice}>RM90.00</Text>
               </View>
             </View>
             <Text style={styles.month}>Nov 20</Text>
@@ -83,9 +87,37 @@ const AnalysisScreen = () => {
             paddingLeft="30"
             absolute
           />
+
+          <View style={{alignItems:'center'}}>
+            <Text>8 expenses, 5 categories</Text>
+          </View>
+
+          <FlatList
+            data={data}
+            keyExtractor={item => item.name}
+            renderItem={({item}) => {
+              const percentage = (Math.round(item.population * 100) / 30).toFixed(1);
+              const total = (Math.round(item.population * 3)).toFixed(2);
+              return (
+                <Card style={styles.card}>
+                  <Card.Content style={styles.cardContent}>
+                    <View style={{flexDirection:'row', alignItems:'center'}}>
+                      <Icon size={25} name="angle-right" color="#1C9C9B"/>
+                      <Title style={{marginLeft:7}}>{item.name}</Title>
+                      <Paragraph style={{marginLeft:3}}>({percentage}%)</Paragraph>
+                    </View>
+                    <View>
+                      <Paragraph>Total: {total}</Paragraph>
+                    </View>
+                  </Card.Content>
+                </Card> 
+              )
+            }}
+          />
           
 
       </SafeAreaView>
+      </KeyboardAwareScrollView>
     </View>
   )
 };
@@ -124,6 +156,16 @@ const styles = StyleSheet.create({
     width:60,
     fontSize:16,
     marginEnd:20,
+  },
+  card: {
+    marginLeft:20,
+    marginRight:20,
+    marginBottom:10,
+  },
+  cardContent: {
+    flexDirection:"row",
+    alignItems:"center",
+    justifyContent:"space-between",
   },
 });
 

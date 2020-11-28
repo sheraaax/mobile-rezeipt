@@ -18,20 +18,25 @@ const HomeScreen = ({navigation}) => {
   const { logout } = useContext(AuthContext);
   const { state, fetchSales } = useContext(SalesContext);
 
+  let totalExpense = 0;
+  state.forEach((item) => {
+    const upCart = phpUnserialize(item.cart);
+    total_price = upCart.totalPrice;
+    totalExpense += total_price;
+    //console.log(item);
+  })
+
   const date = new Date().getDate();
   const month = new Date().getMonth();
   const year = new Date().getFullYear();
-  // const hours = new Date().getHours();
-  // const minutes = new Date().getMinutes();
   const todaysDate = new Date(year, month, date)
   const monthString =  todaysDate.toLocaleString('default', { month: 'long' });
-
 
   function renderHeadlineExpense() {
     return (
       <View>
         <Text style={styles.headline}>{monthString} Expenses</Text>
-        <Text style={styles.totalExpense}>RM34.00</Text>
+        <Text style={styles.totalExpense}>RM{(Math.round(totalExpense * 100) / 100).toFixed(2)}</Text>
       </View>
     );
   }
@@ -55,7 +60,8 @@ const HomeScreen = ({navigation}) => {
                       const cart = phpUnserialize(item.cart);
                       const newTotalPrice = (Math.round(cart.totalPrice * 100) / 100).toFixed(2);
 
-                      //console.log(cart.totalQty);
+                      //console.log(cart.totalPrice);
+
 
                       var helpers = {
                         contains: function (input, arg) {
@@ -63,11 +69,7 @@ const HomeScreen = ({navigation}) => {
                         }
                       }
 
-                      // const categories = jsonQuery('items[**][*item][*attributes][*category_id]', {
-                      //   data: cart,
-                      //   locals: helpers
-                      //   }).value;
-
+                      
                       const itemNames = jsonQuery('items[**][*item][*attributes][*name]', {
                         data: cart,
                         locals: helpers
@@ -100,7 +102,6 @@ const HomeScreen = ({navigation}) => {
                       const t_todaysDate = new Date(t_year, t_month, t_date)
                       const t_monthString =  t_todaysDate.toLocaleString('default', { month: 'long' });
 
-
                       return (
                         <View>
 
@@ -109,7 +110,14 @@ const HomeScreen = ({navigation}) => {
                           <Text style={styles.totalPrice}></Text>
                         </View>
                       
-                      <TouchableOpacity onPress={ () => navigation.navigate('SalesDetails')}>
+                      <TouchableOpacity onPress={() => {
+                        navigation.navigate('SalesDetails', {
+                          cart: cart,
+                          t: t
+                          });
+                        }}
+                      >
+
                           <Card style={styles.card}>
                             <Card.Content style={styles.cardContent}>
                               <Icon size={40} name="store-alt" color="grey"/>
