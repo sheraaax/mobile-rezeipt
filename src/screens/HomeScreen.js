@@ -23,8 +23,8 @@ const HomeScreen = ({navigation}) => {
     const upCart = phpUnserialize(item.cart);
     total_price = upCart.totalPrice;
     totalExpense += total_price;
-    //console.log(item);
   })
+  //console.log(totalExpense);
 
   const date = new Date().getDate();
   const month = new Date().getMonth();
