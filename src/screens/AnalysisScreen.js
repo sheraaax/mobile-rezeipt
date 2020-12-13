@@ -1,7 +1,7 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { View, StyleSheet, Text, Dimensions } from 'react-native';
 import { SafeAreaView, NavigationEvents } from 'react-navigation';
-import { Card, Title, Paragraph, List } from 'react-native-paper';
+import { Card, Title, Paragraph } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { PieChart } from "react-native-chart-kit";
@@ -15,42 +15,106 @@ const AnalysisScreen = () => {
 
   const { state, fetchSales } = useContext(SalesContext);
 
+  let totalExpense = 0;
+  state.forEach((item) => {
+    const upCart = phpUnserialize(item.cart);
+    total_price = upCart.totalPrice;
+    totalExpense += total_price;
+  })
+
+  let foodCount = 0;
+  let drinksCount = 0;
+  let fruitsCount = 0;
+  let dessertCount = 0;
+  let stationeryCount = 0;
+  let totalCount = 0;
+
+  state.forEach((item) => {
+    const upCart = phpUnserialize(item.cart);
+    //console.log(upCart);
+
+    const helpers = {
+      contains: function (input, arg) {
+        return Array.isArray(input) && input.some(x => x.includes(arg))
+      }
+    };
+  
+    const item_categories = jsonQuery('items[**][*item][*attributes][*category_id]', {
+      data: upCart,
+      locals: helpers
+    }).value; 
+    console.log("categories: ",item_categories);
+
+    const items_ = jsonQuery('items[**][*item][*attributes]', {
+      data: upCart,
+      locals: helpers
+    }).value; 
+    //console.log("items_: ",items_);
+
+
+    foodCount = items_.reduce((foodTotal, item) => (item.category_id === 1 ? foodCount+=1 : foodCount)
+    , 0);
+    console.log('food id count: ',foodCount);
+    
+    drinksCount = items_.reduce((drinksTotal, item) => (item.category_id === 2 ? drinksCount+=1 : drinksCount)
+    , 0);
+    console.log('drinks id count: ',drinksCount);
+
+    fruitsCount = items_.reduce((fruitsTotal, item) =>  (item.category_id === 3 ? fruitsCount+=1 : fruitsCount)
+    , 0);
+    console.log('fruits id count: ',fruitsCount);
+
+    dessertCount = items_.reduce((dessertTotal, item) => (item.category_id === 4 ? dessertCount+=1 : dessertCount)
+    , 0);
+    console.log('dessert id count: ',dessertCount);
+
+    stationeryCount = items_.reduce((stationeryTotal, item) => (item.category_id === 5 ? stationeryCount+=1 : stationeryCount)
+    , 0);
+    console.log('stationery id count: ',stationeryCount);
+
+    totalCount = items_.reduce((total, item) => totalCount+=1 , 0);
+    console.log(totalCount);
+
+  })
+
+  
   const data = [
     {
       name: "Food",
-      population: 4,
+      population: foodCount,
       color: "#0eaaa9",
       legendFontColor: "#7F7F7F",
       legendFontSize: 15
     },
     {
       name: "Drinks",
-      population: 10,
+      population: drinksCount,
       color: "#5c5c5c",
       legendFontColor: "#7F7F7F",
       legendFontSize: 15
     },
     {
       name: "Fruits",
-      population: 2,
+      population: fruitsCount,
       color: "#2bd9d8",
       legendFontColor: "#7F7F7F",
       legendFontSize: 15
     },
     {
-      name: "Clothes",
-      population: 5,
+      name: "Dessert",
+      population: dessertCount,
       color: "#239594",
       legendFontColor: "#7F7F7F",
       legendFontSize: 15
     },
     {
-      name: "Grocery",
-      population: 9,
+      name: "Stationery",
+      population: stationeryCount,
       color: "#467271",
       legendFontColor: "#7F7F7F",
       legendFontSize: 15
-    }
+    },
+
   ]
 
   return (
@@ -62,7 +126,7 @@ const AnalysisScreen = () => {
             <View style={{marginLeft:20}}>
               <Text style={styles.titleTotal}>Total Expense</Text>
               <View style={styles.totalExpenseContainer}>
-                <Text style={styles.titlePrice}>RM90.00</Text>
+                <Text style={styles.titlePrice}>RM{(Math.round(totalExpense * 100) / 100).toFixed(2)}</Text>
               </View>
             </View>
             <Text style={styles.month}>Nov 20</Text>
@@ -96,7 +160,7 @@ const AnalysisScreen = () => {
             data={data}
             keyExtractor={item => item.name}
             renderItem={({item}) => {
-              const percentage = (Math.round(item.population * 100) / 30).toFixed(1);
+              const percentage = (Math.round(item.population * 100) / totalCount).toFixed(1);
               const total = (Math.round(item.population * 3)).toFixed(2);
               return (
                 <Card style={styles.card}>
