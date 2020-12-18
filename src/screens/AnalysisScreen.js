@@ -29,6 +29,12 @@ const AnalysisScreen = () => {
   let stationeryCount = 0;
   let totalCount = 0;
 
+  let foodPrice = 0;
+  let drinksPrice = 0;
+  let fruitsPrice = 0;
+  let dessertPrice = 0;
+  let stationeryPrice = 0;
+
   state.forEach((item) => {
     const upCart = phpUnserialize(item.cart);
     //console.log(upCart);
@@ -43,7 +49,13 @@ const AnalysisScreen = () => {
       data: upCart,
       locals: helpers
     }).value; 
-    console.log("categories: ",item_categories);
+    //console.log("categories: ",item_categories);
+
+    const item_prices = jsonQuery('items[**][*item][*attributes][*price]', {
+      data: upCart,
+      locals: helpers
+    }).value; 
+    //console.log("price: ",item_prices);
 
     const items_ = jsonQuery('items[**][*item][*attributes]', {
       data: upCart,
@@ -54,26 +66,47 @@ const AnalysisScreen = () => {
 
     foodCount = items_.reduce((foodTotal, item) => (item.category_id === 1 ? foodCount+=1 : foodCount)
     , 0);
-    console.log('food id count: ',foodCount);
+    //console.log('food id count: ',foodCount);
     
     drinksCount = items_.reduce((drinksTotal, item) => (item.category_id === 2 ? drinksCount+=1 : drinksCount)
     , 0);
-    console.log('drinks id count: ',drinksCount);
+    //console.log('drinks id count: ',drinksCount);
 
     fruitsCount = items_.reduce((fruitsTotal, item) =>  (item.category_id === 3 ? fruitsCount+=1 : fruitsCount)
     , 0);
-    console.log('fruits id count: ',fruitsCount);
+    //console.log('fruits id count: ',fruitsCount);
 
     dessertCount = items_.reduce((dessertTotal, item) => (item.category_id === 4 ? dessertCount+=1 : dessertCount)
     , 0);
-    console.log('dessert id count: ',dessertCount);
+    //console.log('dessert id count: ',dessertCount);
 
     stationeryCount = items_.reduce((stationeryTotal, item) => (item.category_id === 5 ? stationeryCount+=1 : stationeryCount)
     , 0);
-    console.log('stationery id count: ',stationeryCount);
+    //console.log('stationery id count: ',stationeryCount);
 
     totalCount = items_.reduce((total, item) => totalCount+=1 , 0);
-    console.log(totalCount);
+    //console.log(totalCount);
+
+
+    foodPrice = items_.reduce((foodTotal, item) => (item.category_id === 1 ? foodPrice+=item.price : foodPrice)
+    , 0);
+    console.log('food id price: ',foodPrice);
+
+    drinksPrice = items_.reduce((drinksTotal, item) => (item.category_id === 2 ? drinksPrice+=item.price : drinksPrice)
+    , 0);
+    console.log('drinks id price: ',drinksPrice);
+
+    fruitsPrice = items_.reduce((fruitsTotal, item) => (item.category_id === 3 ? fruitsPrice+=item.price : fruitsPrice)
+    , 0);
+    console.log('fruits id price: ',fruitsPrice);
+
+    dessertPrice = items_.reduce((dessertTotal, item) => (item.category_id === 4 ? dessertPrice+=item.price : dessertPrice)
+    , 0);
+    console.log('dessert id price: ',dessertPrice);
+
+    stationeryPrice = items_.reduce((stationeryTotal, item) => (item.category_id === 5 ? stationeryPrice+=item.price : stationeryPrice)
+    , 0);
+    console.log('stationery id price: ',stationeryPrice);
 
   })
 
@@ -84,35 +117,40 @@ const AnalysisScreen = () => {
       population: foodCount,
       color: "#0eaaa9",
       legendFontColor: "#7F7F7F",
-      legendFontSize: 15
+      legendFontSize: 15,
+      categoryPrice: foodPrice,
     },
     {
       name: "Drinks",
       population: drinksCount,
       color: "#5c5c5c",
       legendFontColor: "#7F7F7F",
-      legendFontSize: 15
+      legendFontSize: 15,
+      categoryPrice: drinksPrice,
     },
     {
       name: "Fruits",
       population: fruitsCount,
       color: "#2bd9d8",
       legendFontColor: "#7F7F7F",
-      legendFontSize: 15
+      legendFontSize: 15,
+      categoryPrice: fruitsPrice,
     },
     {
       name: "Dessert",
       population: dessertCount,
       color: "#239594",
       legendFontColor: "#7F7F7F",
-      legendFontSize: 15
+      legendFontSize: 15,
+      categoryPrice: dessertPrice,
     },
     {
       name: "Stationery",
       population: stationeryCount,
       color: "#467271",
       legendFontColor: "#7F7F7F",
-      legendFontSize: 15
+      legendFontSize: 15,
+      categoryPrice: stationeryPrice,
     },
 
   ]
@@ -161,7 +199,8 @@ const AnalysisScreen = () => {
             keyExtractor={item => item.name}
             renderItem={({item}) => {
               const percentage = (Math.round(item.population * 100) / totalCount).toFixed(1);
-              const total = (Math.round(item.population * 3)).toFixed(2);
+              const total = (Math.round(item.categoryPrice * 100) / 100).toFixed(2);
+            
               return (
                 <Card style={styles.card}>
                   <Card.Content style={styles.cardContent}>
@@ -171,7 +210,7 @@ const AnalysisScreen = () => {
                       <Paragraph style={{marginLeft:3}}>({percentage}%)</Paragraph>
                     </View>
                     <View>
-                      <Paragraph>Total: {total}</Paragraph>
+                      <Paragraph>Total: RM{total}</Paragraph>
                     </View>
                   </Card.Content>
                 </Card> 
