@@ -1,16 +1,13 @@
 import React, { useContext } from 'react';
-import { StyleSheet, Text, View, ScrollView, FlatList, TouchableOpacity } from 'react-native';
-import { Button } from 'react-native-elements';
+import { StyleSheet, Text, View, ScrollView, FlatList, TouchableOpacity, Alert } from 'react-native';
 import { SafeAreaView, NavigationEvents } from 'react-navigation';
-import { Card, Title, Paragraph, List } from 'react-native-paper';
+import { Card, Title, Paragraph } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { Context as AuthContext } from '../context/AuthContext';
 import { Context as SalesContext } from '../context/SalesContext';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import phpUnserialize from 'phpunserialize';
 import jsonQuery from 'json-query';
-import { orderBy } from 'natural-orderby';
-//import { TouchableOpacity } from 'react-native-gesture-handler';
 
 
 const HomeScreen = ({navigation}) => {
@@ -41,6 +38,37 @@ const HomeScreen = ({navigation}) => {
     );
   }
 
+  function renderLogout() {
+    return (
+       <View style={{alignSelf: 'flex-end', padding:10}}>
+        <Icon.Button
+            style={{marginLeft:5, marginRight:-10, padding:10}}
+            name="sign-out-alt"
+            backgroundColor="grey"
+            onPress={logoutAlert}
+          />
+      </View>
+    );
+  }
+
+  function logoutAlert() {
+    return (
+      Alert.alert(
+        "Logout?",
+        "Are you sure you want to logout?",
+        [
+          {
+            text: "Cancel",
+            onPress: () => console.log("Cancel Pressed"),
+            style: "cancel"
+          },
+          { text: "Logout", onPress: () => {logout} }
+        ],
+        { cancelable: false }
+      )
+    );
+  }
+
 
   return (
     <View style={{flex:1, backgroundColor:'white'}}>
@@ -50,8 +78,9 @@ const HomeScreen = ({navigation}) => {
           <ScrollView>
             <NavigationEvents onWillFocus={fetchSales} />
 
+              {renderLogout()}
               {renderHeadlineExpense()}
-
+            
               <View>
                 <FlatList
                     data={state}
@@ -137,13 +166,6 @@ const HomeScreen = ({navigation}) => {
                   />
               </View>
 
-                
-              <Button
-                style={styles.logoutBtn}
-                title="Logout"
-                onPress={logout}
-              />
-
           </ScrollView>
         </SafeAreaView>
       </View>
@@ -156,8 +178,9 @@ const styles = StyleSheet.create({
   logoutBtn:{
     width:"100%",
     alignItems:"center",
-    marginTop:40,
-    marginBottom:10
+    marginTop:5,
+    marginRight:10,
+    //marginBottom:
   },
   container: {
     flex: 1,
@@ -165,7 +188,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   headline: {
-    marginTop:50,
+    marginTop:17,
     fontSize:30,
     textAlign: 'center',
   },
