@@ -157,8 +157,10 @@ const AnalysisScreen = () => {
 
   return (
     <View>
-      <KeyboardAwareScrollView>
       <SafeAreaView>
+      <KeyboardAwareScrollView>
+      
+      
         <NavigationEvents onWillFocus={fetchSales} />
           <View style={styles.topTitle}>
             <View style={{marginLeft:20}}>
@@ -218,9 +220,8 @@ const AnalysisScreen = () => {
             }}
           />
           
-
-      </SafeAreaView>
       </KeyboardAwareScrollView>
+      </SafeAreaView>
     </View>
   )
 };
