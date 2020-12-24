@@ -20,8 +20,8 @@ const CustomerRedemptionDetailScreen = ({navigation}) => {
             <Icon style={styles.icon} size={50} name="birthday-cake" color="grey"/>
 
             <View>
-                <Title style={styles.cardContentTitle}>{redemption.redemption.name}</Title>
-                <Paragraph style={styles.cardContentDescription}>{redemption.redemption.description}</Paragraph>
+                <Title style={styles.cardContentTitle}>Kedai Runcit Yam</Title>
+                <Paragraph style={styles.cardContentDescription}>{redemption.redemption.name}</Paragraph>
                 <Paragraph style={styles.cardContentDescription}>Claimed at : {redemption.createdAt}</Paragraph>
                 <Paragraph style={styles.cardContentDescription}>Expiry Date : {redemption.redemption.expirationDate}</Paragraph>
                 <Paragraph style={styles.cardContentDescription}>Show the coupon code below when making payment</Paragraph>    
@@ -55,10 +55,12 @@ const styles = StyleSheet.create({
 
   cardContentTitle: {
     color:"#1C9C9B",
-    textAlign: "center"
+    textAlign: "center",
+    fontSize: 19
   },
   cardContentDescription: {
-      textAlign: "center"
+      textAlign: "center",
+      fontSize: 16
   },
   card: {
     margin:10,
