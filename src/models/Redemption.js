@@ -12,8 +12,13 @@ const Redemption = db.define('redemption', {
         type: Sequelize.STRING,
         allowNull: false,
     },
-    description : {
-        type: Sequelize.STRING
+    storeId : {
+        type: Sequelize.INTEGER,
+        references: {         
+            model: 'store',
+            key: 'id'
+          },
+        allowNull: false
     },
     points : {
         type: Sequelize.INTEGER,

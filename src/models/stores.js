@@ -1,37 +1,39 @@
 /* jshint indent: 2 */
 
+const db = require('../config/database');
 const Sequelize = require('sequelize');
-module.exports = function(sequelize, DataTypes) {
-  return sequelize.define('stores', {
+const Stores = db.define('stores',{
+
+
     id: {
       autoIncrement: true,
-      type: DataTypes.BIGINT,
+      type: Sequelize.BIGINT,
       allowNull: false,
       primaryKey: true
     },
     name: {
-      type: DataTypes.STRING(255),
+      type: Sequelize.STRING(255),
       allowNull: false
     },
     address: {
-      type: DataTypes.STRING(255),
+      type: Sequelize.STRING(255),
       allowNull: false
     },
     phone_num: {
-      type: DataTypes.STRING(255),
+      type: Sequelize.STRING(255),
       allowNull: false
     },
     created_at: {
-      type: DataTypes.DATE,
+      type: Sequelize.DATE,
       allowNull: true
     },
     updated_at: {
-      type: DataTypes.DATE,
+      type: Sequelize.DATE,
       allowNull: true
     }
   }, {
-    sequelize,
     tableName: 'stores',
     timestamps: false
     });
-};
+
+    module.exports = Stores;

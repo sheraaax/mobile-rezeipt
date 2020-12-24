@@ -60,8 +60,8 @@ const RedemptionScreen = ({navigation}) => {
                       <Icon size={60} name="birthday-cake" color="grey"/>
 
                       <View>
-                        <Title style={styles.cardContentTitle}>{item.name}</Title>
-                        <Paragraph style={styles.cardContentDescription}>{item.description}</Paragraph>
+                        <Title style={styles.cardContentTitle}>{item.store.name}</Title>
+                        <Paragraph style={styles.cardContentDescription}>{item.name}</Paragraph>
                       </View>
 
                     </Card.Content>
