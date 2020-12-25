@@ -5,6 +5,7 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { Context as RedemptionContext } from '../context/RedemptionContext';
 import { Context as CustomerRedemptionContext } from '../context/CustomerRedemptionContext';
+import { Context as CustomerContext } from '../context/CustomerContext';
 import { NavigationEvents } from 'react-navigation';
 
 const { height, width } = Dimensions.get('window');
@@ -12,8 +13,8 @@ const { height, width } = Dimensions.get('window');
 
 const RedemptionScreen = ({navigation}) => {
   const { state: {redemptions}, fetchRedemptions } = useContext(RedemptionContext);
-  const { state: {errorMessage, customer}, createCustomerRedemption, clearErrorMessage, fetchCustomer } = useContext(CustomerRedemptionContext);
-  
+  const { state: {errorMessage}, createCustomerRedemption, clearErrorMessage } = useContext(CustomerRedemptionContext);
+  const { state: {customer}, fetchCustomer } = useContext(CustomerContext);
   const customer_id = customer.cust.id;
 
   console.log('Error:',errorMessage);
