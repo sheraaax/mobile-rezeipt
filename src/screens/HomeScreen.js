@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { StyleSheet, Text, View, ScrollView, FlatList, TouchableOpacity, Alert } from 'react-native';
+import { StyleSheet, Text, View, ScrollView, FlatList, TouchableOpacity, Alert, Button } from 'react-native';
 import { SafeAreaView, NavigationEvents } from 'react-navigation';
 import { Card, Title, Paragraph } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/FontAwesome5';
@@ -62,7 +62,9 @@ const HomeScreen = ({navigation}) => {
             onPress: () => console.log("Cancel Pressed"),
             style: "cancel"
           },
-          { text: "Logout", onPress: () => {logout} }
+          { text: "Logout", 
+            onPress: () => logout() 
+          }
         ],
         { cancelable: false }
       )
@@ -89,7 +91,7 @@ const HomeScreen = ({navigation}) => {
                       const cart = phpUnserialize(item.cart);
                       const newTotalPrice = (Math.round(cart.totalPrice * 100) / 100).toFixed(2);
 
-                      //console.log(cart.totalPrice);
+                     // console.log(cart);
 
 
                       var helpers = {
@@ -97,7 +99,6 @@ const HomeScreen = ({navigation}) => {
                           return Array.isArray(input) && input.some(x => x.includes(arg))
                         }
                       }
-
                       
                       const itemNames = jsonQuery('items[**][*item][*attributes][*name]', {
                         data: cart,
@@ -119,7 +120,12 @@ const HomeScreen = ({navigation}) => {
                         locals: helpers
                         }).value;  
 
-                      //console.log(itemCategories);
+                      const qty = jsonQuery('items[**][*qty]', {
+                        data: cart,
+                        locals: helpers
+                        }).value;
+                      console.log(qty);
+
 
 
                       const t = item.created_at.split(/[- : T Z .]/);
@@ -142,7 +148,7 @@ const HomeScreen = ({navigation}) => {
                       <TouchableOpacity onPress={() => {
                         navigation.navigate('SalesDetails', {
                           cart: cart,
-                          t: t
+                          t: t,
                           });
                         }}
                       >
@@ -160,10 +166,18 @@ const HomeScreen = ({navigation}) => {
                         </TouchableOpacity> 
 
                       </View>
+                      
 
                       );
                     }}
                   />
+
+              {/* <Button
+                style={styles.logoutBtn}
+                title="Logout"
+                onPress={logout}
+              /> */}
+
               </View>
 
           </ScrollView>
@@ -188,7 +202,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   headline: {
-    marginTop:17,
+    marginTop:10,
     fontSize:30,
     textAlign: 'center',
   },
