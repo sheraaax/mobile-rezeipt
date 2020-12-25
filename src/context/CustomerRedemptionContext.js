@@ -24,9 +24,7 @@ const createCustomerRedemption = dispatch => async (customerId, redemptionId) =>
     console.log(customerId, redemptionId);
     try {
         await RezeiptApi.post('/customerRedemption', {customerId, redemptionId});
-        //dispatch({ type: 'clear_error_message' });
     } catch (err) {
-        //console.log(err);
         dispatch({ type: 'add_error', payload: 'You have already redeemed this reward!'});
     }
 
