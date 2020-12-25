@@ -12,7 +12,8 @@ const { height, width } = Dimensions.get('window');
 
 const RedemptionScreen = ({navigation}) => {
   const { state, fetchRedemptions } = useContext(RedemptionContext);
-  const { data, createCustomerRedemption } = useContext(CustomerRedemptionContext);
+  const { state: {errorMessage}, createCustomerRedemption, clearErrorMessage } = useContext(CustomerRedemptionContext);
+  console.log('Error:',errorMessage);
 
   return (
     <View style={styles.container}>
@@ -33,8 +34,19 @@ const RedemptionScreen = ({navigation}) => {
 
       </View>
 
+      {errorMessage ? 
+        Alert.alert(
+          "Error",
+          "You have already redeemed this reward!",
+          [
+            { text: "OK", onPress: () => console.log("OK Pressed") }
+          ],
+          { cancelable: false }
+        )
+        : null}
+
       <View>
-        <NavigationEvents onWillFocus={fetchRedemptions} />
+        <NavigationEvents onWillFocus={fetchRedemptions} onWillBlur={clearErrorMessage} />
         <FlatList
           data={state}
           keyExtractor={item => item.id.toString()}
@@ -47,7 +59,7 @@ const RedemptionScreen = ({navigation}) => {
                   'Are you sure to redeem this reward?',
                   [{
                   text: 'Redeem',
-                  onPress: () => console.log(createCustomerRedemption(2 , item.id))
+                  onPress: () => { createCustomerRedemption(1, item.id) }
                 },
                 {
                   text: 'Cancel',
@@ -55,6 +67,7 @@ const RedemptionScreen = ({navigation}) => {
                   style: 'cancel'
                 }
                 ])}}>
+
                   <Card style ={styles.card}>
                     <Card.Content style={styles.cardContent}>
                       <Icon size={60} name="birthday-cake" color="grey"/>
