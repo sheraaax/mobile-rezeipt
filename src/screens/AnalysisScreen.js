@@ -49,13 +49,15 @@ const AnalysisScreen = () => {
       data: upCart,
       locals: helpers
     }).value; 
-    //console.log("categories: ",item_categories);
+    console.log("categories: ",item_categories);
 
     const item_prices = jsonQuery('items[**][*item][*attributes][*price]', {
       data: upCart,
       locals: helpers
     }).value; 
-    //console.log("price: ",item_prices);
+    console.log("price: ",item_prices);
+
+    //pricesArray = item_prices.reduce((a,b) => { return a.concat(...b) }, []);
 
     const items_ = jsonQuery('items[**][*item][*attributes]', {
       data: upCart,
@@ -63,10 +65,9 @@ const AnalysisScreen = () => {
     }).value; 
     //console.log("items_: ",items_);
 
-
     foodCount = items_.reduce((foodTotal, item) => (item.category_id === 1 ? foodCount+=1 : foodCount)
     , 0);
-    //console.log('food id count: ',foodCount);
+   // console.log('food id count: ',foodCount);
     
     drinksCount = items_.reduce((drinksTotal, item) => (item.category_id === 2 ? drinksCount+=1 : drinksCount)
     , 0);
@@ -94,19 +95,20 @@ const AnalysisScreen = () => {
 
     drinksPrice = items_.reduce((drinksTotal, item) => (item.category_id === 2 ? drinksPrice+=item.price : drinksPrice)
     , 0);
-    console.log('drinks id price: ',drinksPrice);
+    //console.log('drinks id price: ',drinksPrice);
 
     fruitsPrice = items_.reduce((fruitsTotal, item) => (item.category_id === 3 ? fruitsPrice+=item.price : fruitsPrice)
     , 0);
-    console.log('fruits id price: ',fruitsPrice);
+    //console.log('fruits id price: ',fruitsPrice);
 
     dessertPrice = items_.reduce((dessertTotal, item) => (item.category_id === 4 ? dessertPrice+=item.price : dessertPrice)
     , 0);
-    console.log('dessert id price: ',dessertPrice);
+    //console.log('dessert id price: ',dessertPrice);
 
     stationeryPrice = items_.reduce((stationeryTotal, item) => (item.category_id === 5 ? stationeryPrice+=item.price : stationeryPrice)
     , 0);
-    console.log('stationery id price: ',stationeryPrice);
+    //console.log('stationery id price: ',stationeryPrice);
+    
 
   })
 
@@ -115,7 +117,7 @@ const AnalysisScreen = () => {
     {
       name: "Food",
       population: foodCount,
-      color: "#0eaaa9",
+      color: "orange",
       legendFontColor: "#7F7F7F",
       legendFontSize: 15,
       categoryPrice: foodPrice,
@@ -123,7 +125,7 @@ const AnalysisScreen = () => {
     {
       name: "Drinks",
       population: drinksCount,
-      color: "#5c5c5c",
+      color: "red",
       legendFontColor: "#7F7F7F",
       legendFontSize: 15,
       categoryPrice: drinksPrice,
@@ -131,7 +133,7 @@ const AnalysisScreen = () => {
     {
       name: "Fruits",
       population: fruitsCount,
-      color: "#2bd9d8",
+      color: "green",
       legendFontColor: "#7F7F7F",
       legendFontSize: 15,
       categoryPrice: fruitsPrice,
@@ -139,7 +141,7 @@ const AnalysisScreen = () => {
     {
       name: "Dessert",
       population: dessertCount,
-      color: "#239594",
+      color: "purple",
       legendFontColor: "#7F7F7F",
       legendFontSize: 15,
       categoryPrice: dessertPrice,
@@ -147,7 +149,7 @@ const AnalysisScreen = () => {
     {
       name: "Stationery",
       population: stationeryCount,
-      color: "#467271",
+      color: "blue",
       legendFontColor: "#7F7F7F",
       legendFontSize: 15,
       categoryPrice: stationeryPrice,
@@ -169,7 +171,7 @@ const AnalysisScreen = () => {
                 <Text style={styles.titlePrice}>RM{(Math.round(totalExpense * 100) / 100).toFixed(2)}</Text>
               </View>
             </View>
-            <Text style={styles.month}>Nov 20</Text>
+            <Text style={styles.month}>Dec 20</Text>
           </View>
         
         
@@ -193,7 +195,7 @@ const AnalysisScreen = () => {
           />
 
           <View style={{alignItems:'center'}}>
-            <Text>8 expenses, 5 categories</Text>
+            <Text>{state.length} expenses, 5 categories</Text>
           </View>
 
           <FlatList
@@ -206,13 +208,16 @@ const AnalysisScreen = () => {
               return (
                 <Card style={styles.card}>
                   <Card.Content style={styles.cardContent}>
-                    <View style={{flexDirection:'row', alignItems:'center'}}>
+                    <View style={{flexDirection:'row', alignItems:'center', width:235}}>
                       <Icon size={25} name="angle-right" color="#1C9C9B"/>
                       <Title style={{marginLeft:7}}>{item.name}</Title>
                       <Paragraph style={{marginLeft:3}}>({percentage}%)</Paragraph>
                     </View>
-                    <View>
-                      <Paragraph>Total: RM{total}</Paragraph>
+                    <View style={{width:50}}>
+                      <Paragraph>Total:</Paragraph>
+                    </View>
+                    <View style={{width:70}}>
+                      <Paragraph>RM{total}</Paragraph>
                     </View>
                   </Card.Content>
                 </Card> 
