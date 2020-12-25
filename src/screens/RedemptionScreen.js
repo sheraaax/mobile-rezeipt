@@ -5,7 +5,6 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { Context as RedemptionContext } from '../context/RedemptionContext';
 import { Context as CustomerRedemptionContext } from '../context/CustomerRedemptionContext';
-import { Context as SalesContext } from '../context/SalesContext';
 import { NavigationEvents } from 'react-navigation';
 
 const { height, width } = Dimensions.get('window');
@@ -13,12 +12,12 @@ const { height, width } = Dimensions.get('window');
 
 const RedemptionScreen = ({navigation}) => {
   const { state: {redemptions}, fetchRedemptions } = useContext(RedemptionContext);
-  const { state: {errorMessage}, createCustomerRedemption, clearErrorMessage } = useContext(CustomerRedemptionContext);
-  const { state, fetchSales } = useContext(SalesContext);
-  const customer_id = state[0].customerId;
+  const { state: {errorMessage, customer}, createCustomerRedemption, clearErrorMessage, fetchCustomer } = useContext(CustomerRedemptionContext);
+  
+  const customer_id = customer.cust.id;
 
   console.log('Error:',errorMessage);
-  console.log('CR:',customer_id);
+  console.log('customerId:',customer_id);
 
   return (
     <View style={styles.container}>
@@ -51,7 +50,7 @@ const RedemptionScreen = ({navigation}) => {
         : null}
 
       <View>
-        <NavigationEvents onWillFocus={fetchRedemptions} onDidFocus={fetchSales} onWillBlur={clearErrorMessage} />
+        <NavigationEvents onWillFocus={fetchRedemptions} onDidFocus={fetchCustomer} onWillBlur={clearErrorMessage} />
         <FlatList
           data={redemptions}
           keyExtractor={item => item.id.toString()}

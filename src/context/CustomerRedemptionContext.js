@@ -7,6 +7,8 @@ const customerRedemptionReducer = (state, action) => {
             return action.payload;
         case 'fetch_customerRedemptionDetails':
             return action.payload;
+        case 'fetch_customer':
+            return { customer: action.payload};
         case 'add_error':
             return { ...state, errorMessage: action.payload };
         case 'clear_error_message':
@@ -40,8 +42,13 @@ const fetchCustomerRedemptionDetails = dispatch => async() => {
     dispatch({ type: 'fetch_customerRedemptionDetails', payload:response.data});
 };
 
+const fetchCustomer = dispatch => async () => {
+    const response = await RezeiptApi.get('/customer');
+    dispatch({ type: 'fetch_customer', payload:response.data});
+};
+
 export const { Context, Provider } = createDataContext(
     customerRedemptionReducer, 
-    { createCustomerRedemption, fetchCustomerRedemptions, fetchCustomerRedemptionDetails, clearErrorMessage },
-    { errorMessage:'' }
+    { createCustomerRedemption, fetchCustomerRedemptions, fetchCustomerRedemptionDetails, clearErrorMessage, fetchCustomer },
+    { errorMessage:'', customer: null }
   );
