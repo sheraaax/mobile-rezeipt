@@ -15,10 +15,8 @@ const RedemptionScreen = ({navigation}) => {
   const { state: {redemptions}, fetchRedemptions } = useContext(RedemptionContext);
   const { state: {errorMessage}, createCustomerRedemption, clearErrorMessage } = useContext(CustomerRedemptionContext);
   const { state: {customer}, fetchCustomer } = useContext(CustomerContext);
-  const customer_id = customer.cust.id;
 
   console.log('Error:',errorMessage);
-  console.log('customerId:',customer_id);
 
   return (
     <View style={styles.container}>
@@ -51,7 +49,7 @@ const RedemptionScreen = ({navigation}) => {
         : null}
 
       <View>
-        <NavigationEvents onWillFocus={fetchRedemptions} onDidFocus={fetchCustomer} onWillBlur={clearErrorMessage} />
+        <NavigationEvents onDidFocus={fetchCustomer} onWillFocus={fetchRedemptions} onWillBlur={clearErrorMessage} />
         <FlatList
           data={redemptions}
           keyExtractor={item => item.id.toString()}
@@ -64,7 +62,7 @@ const RedemptionScreen = ({navigation}) => {
                   'Are you sure to redeem this reward?',
                   [{
                   text: 'Redeem',
-                  onPress: () => { createCustomerRedemption(customer_id, item.id) }
+                  onPress: () => { createCustomerRedemption(customer.cust.id, item.id) }
                 },
                 {
                   text: 'Cancel',
