@@ -71,6 +71,17 @@ const HomeScreen = ({navigation}) => {
     );
   }
 
+  function renderEmptyContainer() {
+    return (
+      <Card style={styles.card}>
+        <Card.Content>
+          <Title style={{alignSelf:'center'}}>No expense yet.</Title>
+          <Paragraph style={{alignSelf:'center'}}>Scan your first e-receipt!</Paragraph>
+        </Card.Content>
+      </Card>
+    );
+  }
+
 
   return (
     <View style={{flex:1, backgroundColor:'white'}}>
@@ -86,12 +97,13 @@ const HomeScreen = ({navigation}) => {
               <View>
                 <FlatList
                     data={state}
+                    ListEmptyComponent={renderEmptyContainer()}
                     keyExtractor={item => item.id}
                     renderItem={({ item }) => {
                       const cart = phpUnserialize(item.cart);
                       const newTotalPrice = (Math.round(cart.totalPrice * 100) / 100).toFixed(2);
 
-                     // console.log(cart);
+                      //console.log('customerid:',item.customerId);
 
 
                       var helpers = {
