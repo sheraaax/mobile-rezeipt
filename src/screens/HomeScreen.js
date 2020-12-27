@@ -15,19 +15,24 @@ const HomeScreen = ({navigation}) => {
   const { logout } = useContext(AuthContext);
   const { state, fetchSales } = useContext(SalesContext);
 
-  let totalExpense = 0;
-  state.forEach((item) => {
-    const upCart = phpUnserialize(item.cart);
-    total_price = upCart.totalPrice;
-    totalExpense += total_price;
-  })
-  //console.log(totalExpense);
-
   const date = new Date().getDate();
   const month = new Date().getMonth();
   const year = new Date().getFullYear();
   const todaysDate = new Date(year, month, date)
   const monthString =  todaysDate.toLocaleString('default', { month: 'long' });
+
+  let totalExpense = 0;
+
+  state.forEach((item) => {
+    const upCart = phpUnserialize(item.cart);
+    const u = item.created_at.split(/[- : T Z .]/);
+    const u_month = u[1]-1;
+    if (u_month == month) {
+      total_price = upCart.totalPrice;
+      totalExpense += total_price;
+    }
+  })
+  //console.log(totalExpense);
 
   function renderHeadlineExpense() {
     return (
@@ -102,7 +107,7 @@ const HomeScreen = ({navigation}) => {
                     renderItem={({ item }) => {
                       const cart = phpUnserialize(item.cart);
                       const newTotalPrice = (Math.round(cart.totalPrice * 100) / 100).toFixed(2);
-
+                      
                       //console.log('customerid:',item.customerId);
 
 
@@ -136,9 +141,9 @@ const HomeScreen = ({navigation}) => {
                         data: cart,
                         locals: helpers
                         }).value;
-                      console.log(qty);
+                      //console.log(qty);
 
-
+                      
 
                       const t = item.created_at.split(/[- : T Z .]/);
                       const t_date = t[2];
@@ -150,11 +155,13 @@ const HomeScreen = ({navigation}) => {
                       const t_monthString =  t_todaysDate.toLocaleString('default', { month: 'long' });
 
                       return (
+
+                        ( t_month == month ? ( 
+                          
                         <View>
 
                         <View style={{flexDirection:"row", justifyContent:"space-between"}}>
                           <Text style={styles.date}>{t_date} {t_monthString} {t_year}</Text>
-                          <Text style={styles.totalPrice}></Text>
                         </View>
                       
                       <TouchableOpacity onPress={() => {
@@ -178,17 +185,12 @@ const HomeScreen = ({navigation}) => {
                         </TouchableOpacity> 
 
                       </View>
-                      
+                      ) : null)
 
                       );
                     }}
                   />
 
-              {/* <Button
-                style={styles.logoutBtn}
-                title="Logout"
-                onPress={logout}
-              /> */}
 
               </View>
 
