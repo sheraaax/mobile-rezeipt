@@ -27,18 +27,27 @@ _renderStatus = (status) => {
 
 
 const CustomerRedemptionScreen = ({navigation}) => {
-  const { state, fetchCustomerRedemptions } = useContext(CustomerRedemptionContext);
-  
+
+  const { state: {customerRedemptions}, fetchCustomerRedemptions } = useContext(CustomerRedemptionContext);
+
+  let totalPoints = 0;
+  customerRedemptions.forEach((item) => {
+      if (item.status == 'R') {
+        points = item.redemption.points;
+        totalPoints += points;
+      }
+    })
+
   return (
     <KeyboardAwareScrollView>
       <View style={styles.container}>
         
-          <Text style={styles.totalReceipts}>1120</Text>
+          <Text style={styles.totalReceipts}>{totalPoints}</Text>
           <Text style={styles.headline}>Receipts Collected</Text>
 
       <View style={styles.navigation}>
 
-        <TouchableOpacity onPress={()=>navigation.navigate('Redemption')}>
+        <TouchableOpacity onPress={()=>navigation.navigate('Redemption', {totalPoints: totalPoints})}>
           <Text style={styles.navigationText}>Rewards Available</Text>
         </TouchableOpacity>
 
@@ -51,26 +60,68 @@ const CustomerRedemptionScreen = ({navigation}) => {
       <View>
         <NavigationEvents onWillFocus={fetchCustomerRedemptions}/>
         <FlatList
-          data={state}
+          data={customerRedemptions}
           keyExtractor={item => item.id.toString()}
           renderItem={({ item }) => {
+
+            console.log(item.redemption.expirationDate);
+
             return (
+
+              (item.status == 'A' ? ( 
+
               <View style={styles.card}>
-              <TouchableOpacity onPress={()=>navigation.navigate('CustomerRedemptionDetail', {id: item.id})}>
-                  <Card style ={styles.card}>
-                    <Card.Content style={styles.cardContent}>
-                      <Icon size={60} name="birthday-cake" color="grey"/>
+                <TouchableOpacity onPress={()=>navigation.navigate('CustomerRedemptionDetail', {id: item.id})}>
+                    <Card style ={styles.card}>
+                      <Card.Content style={styles.cardContent}>
+                        <Icon size={60} name="birthday-cake" color="grey"/>
 
-                      <View>
-                        <Title style={styles.cardContentTitle}>{item.redemption.name}</Title>
-                        <Paragraph style={styles.cardContentDescription}>{item.redemption.description}</Paragraph>
-                        {this._renderStatus(item.status)}
-                      </View>
+                        <View>
+                          <Title style={styles.cardContentTitle}>{item.redemption.name}</Title>
+                          <Paragraph style={styles.cardContentDescription}>{item.redemption.description}</Paragraph>
+                          {this._renderStatus(item.status)}
+                        </View>
 
-                    </Card.Content>
-                  </Card>
-              </TouchableOpacity>
+                      </Card.Content>
+                    </Card>
+                </TouchableOpacity>
               </View>
+              ) : item.status == 'R' ? (
+              <View style={styles.card}>
+                    <TouchableOpacity disabled={true}>
+                        <Card style ={styles.card, {backgroundColor:'rgb(235,235,228)'}}>
+                          <Card.Content style={styles.cardContent}>
+                            <Icon size={60} name="birthday-cake" color="grey"/>
+
+                            <View>
+                              <Title style={styles.cardContentTitle}>{item.redemption.name}</Title>
+                              <Paragraph style={styles.cardContentDescription}>{item.redemption.description}</Paragraph>
+                              {this._renderStatus(item.status)}
+                            </View>
+
+                          </Card.Content>
+                        </Card>
+                    </TouchableOpacity>
+                  </View>
+                ) : (
+                  <View style={styles.card}>
+                    <TouchableOpacity disabled={true}>
+                        <Card style ={styles.card, {backgroundColor:'rgb(235,235,228)'}}>
+                          <Card.Content style={styles.cardContent}>
+                            <Icon size={60} name="birthday-cake" color="grey"/>
+
+                            <View>
+                              <Title style={styles.cardContentTitle}>{item.redemption.name}</Title>
+                              <Paragraph style={styles.cardContentDescription}>{item.redemption.description}</Paragraph>
+                              {/* {this._renderStatus(item.status)} */}
+                            </View>
+
+                          </Card.Content>
+                        </Card>
+                    </TouchableOpacity>
+                  </View>
+                ))
+                  
             );
           }}
         />
