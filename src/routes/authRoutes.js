@@ -3,8 +3,11 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const db = require('../config/database');
 const Customer = require('../models/customer');
+const requireAuth = require('../middlewares/requireAuth');
 
 const router = express.Router();
+
+router.use(requireAuth);
 
 router.post('/signup', async (req, res) => {
 
@@ -57,19 +60,19 @@ router.post('/login', async (req, res) => {
  });
 
 
-//  router.get('/:id', async (req, res) => {
-//   const id = req.params.id;
+ router.get('/customer', async (req, res) => {
+  
+  try {
+    const customerId = req.customer.id;
+    console.log('customerId: ',customerId);
 
-//   await Customer.findByPk(id)
-//     .then(data => {
-//       res.send(data);
-//     })
-//     .catch(err => {
-//       res.status(500).send({
-//         message: "Error retrieving Customer with id=" + id
-//       });
-//     });
-//  }); 
+    const cust = await Customer.findByPk(customerId);
+    return res.status(200).send({ cust });
+  } catch (err) {
+    return res.status(404).send({ error: 'customerId not found!'});
+  }
+
+ }); 
 
  
 

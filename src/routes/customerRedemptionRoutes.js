@@ -26,6 +26,7 @@ router.get('/customerRedemption', async (req, res) => {
             order: [
                 ['id', 'DESC']]
             });
+            console.log(customer_redemption);
         res.send(customer_redemption);
     }
     catch(error){
@@ -35,25 +36,24 @@ router.get('/customerRedemption', async (req, res) => {
 
 router.post('/customerRedemption', async(req, res) => {
         const {redemptionId,customerId} = req.body;
-        try{
+        
         let find = await CustomerRedemption.findOne({
             where: {
                 redemptionId: redemptionId,
                 customerId : customerId}
             });
             console.log(find);
-
+        
         if(!find){ 
                 const customer_redemption = new CustomerRedemption({ customerId, redemptionId});
                 await customer_redemption.save();
-                res.send(customer_redemption);
+                return res.status(200).send({ customer_redemption });
         }
-        else {
-            throw new Error('You have already redeemed this reward!');
-        }}
-        catch(error){
-                console.log(error);
-        }}
+        
+        return res.status(422).send({ error: 'You have already redeemed this reward!'});
+    
+        }
+        
 );
 
 router.get('/customerRedemption/:id', async (req, res) => {

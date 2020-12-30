@@ -1,16 +1,13 @@
 import React, { useContext } from 'react';
-import { StyleSheet, Text, View, ScrollView, FlatList, TouchableOpacity } from 'react-native';
-import { Button } from 'react-native-elements';
+import { StyleSheet, Text, View, ScrollView, FlatList, TouchableOpacity, Alert, Button } from 'react-native';
 import { SafeAreaView, NavigationEvents } from 'react-navigation';
-import { Card, Title, Paragraph, List } from 'react-native-paper';
+import { Card, Title, Paragraph } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { Context as AuthContext } from '../context/AuthContext';
 import { Context as SalesContext } from '../context/SalesContext';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import phpUnserialize from 'phpunserialize';
 import jsonQuery from 'json-query';
-import { orderBy } from 'natural-orderby';
-//import { TouchableOpacity } from 'react-native-gesture-handler';
 
 
 const HomeScreen = ({navigation}) => {
@@ -18,19 +15,24 @@ const HomeScreen = ({navigation}) => {
   const { logout } = useContext(AuthContext);
   const { state, fetchSales } = useContext(SalesContext);
 
-  let totalExpense = 0;
-  state.forEach((item) => {
-    const upCart = phpUnserialize(item.cart);
-    total_price = upCart.totalPrice;
-    totalExpense += total_price;
-    //console.log(item);
-  })
-
   const date = new Date().getDate();
   const month = new Date().getMonth();
   const year = new Date().getFullYear();
   const todaysDate = new Date(year, month, date)
   const monthString =  todaysDate.toLocaleString('default', { month: 'long' });
+
+  let totalExpense = 0;
+
+  state.forEach((item) => {
+    const upCart = phpUnserialize(item.cart);
+    const u = item.created_at.split(/[- : T Z .]/);
+    const u_month = u[1]-1;
+    if (u_month == month) {
+      total_price = upCart.totalPrice;
+      totalExpense += total_price;
+    }
+  })
+  //console.log(totalExpense);
 
   function renderHeadlineExpense() {
     return (
@@ -38,6 +40,50 @@ const HomeScreen = ({navigation}) => {
         <Text style={styles.headline}>{monthString} Expenses</Text>
         <Text style={styles.totalExpense}>RM{(Math.round(totalExpense * 100) / 100).toFixed(2)}</Text>
       </View>
+    );
+  }
+
+  function renderLogout() {
+    return (
+       <View style={{alignSelf: 'flex-end', padding:10}}>
+        <Icon.Button
+            style={{marginLeft:5, marginRight:-10, padding:10}}
+            name="sign-out-alt"
+            backgroundColor="grey"
+            onPress={logoutAlert}
+          />
+      </View>
+    );
+  }
+
+  function logoutAlert() {
+    return (
+      Alert.alert(
+        "Logout?",
+        "Are you sure you want to logout?",
+        [
+          {
+            text: "Cancel",
+            onPress: () => console.log("Cancel Pressed"),
+            style: "cancel"
+          },
+          { text: "Logout", 
+            onPress: () => logout() 
+          }
+        ],
+        { cancelable: false }
+      )
+    );
+  }
+
+  function renderEmptyContainer() {
+    return (
+      <Card style={styles.card}>
+        <Card.Content>
+          <Title style={{alignSelf:'center'}}>No expense yet.</Title>
+          <Paragraph style={{alignSelf:'center'}}>Scan your first e-receipt!</Paragraph>
+        </Card.Content>
+      </Card>
     );
   }
 
@@ -50,17 +96,19 @@ const HomeScreen = ({navigation}) => {
           <ScrollView>
             <NavigationEvents onWillFocus={fetchSales} />
 
+              {renderLogout()}
               {renderHeadlineExpense()}
-
+            
               <View>
                 <FlatList
                     data={state}
+                    ListEmptyComponent={renderEmptyContainer()}
                     keyExtractor={item => item.id}
                     renderItem={({ item }) => {
                       const cart = phpUnserialize(item.cart);
                       const newTotalPrice = (Math.round(cart.totalPrice * 100) / 100).toFixed(2);
-
-                      //console.log(cart.totalPrice);
+                      
+                      //console.log('customerid:',item.customerId);
 
 
                       var helpers = {
@@ -68,7 +116,6 @@ const HomeScreen = ({navigation}) => {
                           return Array.isArray(input) && input.some(x => x.includes(arg))
                         }
                       }
-
                       
                       const itemNames = jsonQuery('items[**][*item][*attributes][*name]', {
                         data: cart,
@@ -90,8 +137,13 @@ const HomeScreen = ({navigation}) => {
                         locals: helpers
                         }).value;  
 
-                      //console.log(itemCategories);
+                      const qty = jsonQuery('items[**][*qty]', {
+                        data: cart,
+                        locals: helpers
+                        }).value;
+                      //console.log(qty);
 
+                      
 
                       const t = item.created_at.split(/[- : T Z .]/);
                       const t_date = t[2];
@@ -103,17 +155,19 @@ const HomeScreen = ({navigation}) => {
                       const t_monthString =  t_todaysDate.toLocaleString('default', { month: 'long' });
 
                       return (
+
+                        ( t_month == month ? ( 
+                          
                         <View>
 
                         <View style={{flexDirection:"row", justifyContent:"space-between"}}>
                           <Text style={styles.date}>{t_date} {t_monthString} {t_year}</Text>
-                          <Text style={styles.totalPrice}></Text>
                         </View>
                       
                       <TouchableOpacity onPress={() => {
                         navigation.navigate('SalesDetails', {
                           cart: cart,
-                          t: t
+                          t: t,
                           });
                         }}
                       >
@@ -131,18 +185,14 @@ const HomeScreen = ({navigation}) => {
                         </TouchableOpacity> 
 
                       </View>
+                      ) : null)
 
                       );
                     }}
                   />
-              </View>
 
-                
-              <Button
-                style={styles.logoutBtn}
-                title="Logout"
-                onPress={logout}
-              />
+
+              </View>
 
           </ScrollView>
         </SafeAreaView>
@@ -156,8 +206,9 @@ const styles = StyleSheet.create({
   logoutBtn:{
     width:"100%",
     alignItems:"center",
-    marginTop:40,
-    marginBottom:10
+    marginTop:5,
+    marginRight:10,
+    //marginBottom:
   },
   container: {
     flex: 1,
@@ -165,7 +216,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   headline: {
-    marginTop:50,
+    marginTop:10,
     fontSize:30,
     textAlign: 'center',
   },

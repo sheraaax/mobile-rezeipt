@@ -100,6 +100,14 @@ const SalesDetailsScreen = ({navigation}) => {
                 return (
                     <Icon size={20} name="lemon" color="#1C9C9B"/>
                 );
+            case 4:
+                return (
+                    <Icon size={20} name="birthday-cake" color="#1C9C9B"/>
+                );
+            case 5:
+                return (
+                    <Icon size={20} name="pencil-alt" color="#1C9C9B"/>
+                );
             default:
                 return (
                     <Icon size={20} name="angle-right" color="#1C9C9B"/>
@@ -146,11 +154,11 @@ const SalesDetailsScreen = ({navigation}) => {
                     <Card.Content style={styles.cardContent}>
 
                         <View style={{flexDirection:'row', alignItems:'flex-start', width:175,}}>
-                            <View style={{marginTop:7}}>
+                            <View style={{marginTop:11}}>
                                 {checkCategoryIcon(item.category_id)}
                             </View>
-                            <View style={{marginLeft:7}}>
-                                <Title >{checkCategory(item.category_id)}</Title>
+                            <View style={{marginLeft:7, width:150}}>
+                                <Title style={{fontSize:17}}>{item.name}</Title>
                                 <Paragraph>{item.description}</Paragraph>
                             </View>
                         </View>

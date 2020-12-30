@@ -5,14 +5,18 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { Context as RedemptionContext } from '../context/RedemptionContext';
 import { Context as CustomerRedemptionContext } from '../context/CustomerRedemptionContext';
+import { Context as CustomerContext } from '../context/CustomerContext';
 import { NavigationEvents } from 'react-navigation';
 
 const { height, width } = Dimensions.get('window');
 
 
 const RedemptionScreen = ({navigation}) => {
-  const { state, fetchRedemptions } = useContext(RedemptionContext);
-  const { data, createCustomerRedemption } = useContext(CustomerRedemptionContext);
+  const { state: {redemptions}, fetchRedemptions } = useContext(RedemptionContext);
+  const { state: {errorMessage}, createCustomerRedemption, clearErrorMessage } = useContext(CustomerRedemptionContext);
+  const { state: {customer}, fetchCustomer } = useContext(CustomerContext);
+
+  console.log('Error:',errorMessage);
 
   return (
     <View style={styles.container}>
@@ -33,10 +37,21 @@ const RedemptionScreen = ({navigation}) => {
 
       </View>
 
+      {errorMessage ? 
+        Alert.alert(
+          "Error",
+          "You have already redeemed this reward!",
+          [
+            { text: "OK", onPress: () => console.log("OK Pressed") }
+          ],
+          { cancelable: false }
+        )
+        : null}
+
       <View>
-        <NavigationEvents onWillFocus={fetchRedemptions} />
+        <NavigationEvents onDidFocus={fetchCustomer} onWillFocus={fetchRedemptions} onWillBlur={clearErrorMessage} />
         <FlatList
-          data={state}
+          data={redemptions}
           keyExtractor={item => item.id.toString()}
           renderItem={({ item }) => {
             return (
@@ -47,7 +62,7 @@ const RedemptionScreen = ({navigation}) => {
                   'Are you sure to redeem this reward?',
                   [{
                   text: 'Redeem',
-                  onPress: () => console.log(createCustomerRedemption(2 , item.id))
+                  onPress: () => { createCustomerRedemption(customer.cust.id, item.id) }
                 },
                 {
                   text: 'Cancel',
@@ -55,6 +70,7 @@ const RedemptionScreen = ({navigation}) => {
                   style: 'cancel'
                 }
                 ])}}>
+
                   <Card style ={styles.card}>
                     <Card.Content style={styles.cardContent}>
                       <Icon size={60} name="birthday-cake" color="grey"/>
