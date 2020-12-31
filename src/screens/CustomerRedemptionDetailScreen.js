@@ -10,9 +10,10 @@ const WIDTH = Dimensions.get('window').width;
 
 const CustomerRedemptionDetailScreen = ({navigation}) => {
     const id = navigation.getParam('id');
-    const { state } = useContext(CustomerRedemptionContext);
+    const { state: {customerRedemptions}, updateCustomerRedemptionStatus } = useContext(CustomerRedemptionContext);
 
-    const redemption = state.find(r => r.id === id);
+    const redemption = customerRedemptions.find(r => r.id === id);
+    //console.log(redemption.id);
 
     return (
       <View style={styles.container}>
@@ -24,14 +25,17 @@ const CustomerRedemptionDetailScreen = ({navigation}) => {
                 <Paragraph style={styles.cardContentDescription}>{redemption.redemption.name}</Paragraph>
                 <Paragraph style={styles.cardContentDescription}>Claimed at : {redemption.createdAt}</Paragraph>
                 <Paragraph style={styles.cardContentDescription}>Expiry Date : {redemption.redemption.expirationDate}</Paragraph>
-                <Paragraph style={styles.cardContentDescription}>Show the coupon code below when making payment</Paragraph>    
+                <Paragraph style={styles.cardContentDescription}>Show the coupon code below when making payment</Paragraph>
+                <Paragraph style={styles.cardContentDescription}>Press the coupon code once successfully redeemed</Paragraph>     
             </View>
 
-            <Card style ={styles.card}>
-              <Card.Content style={styles.cardContent}>
-              <Text style={{ color:"white", fontWeight:"bold",fontSize: 30 }}>{redemption.redemption.couponCode}</Text>
-              </Card.Content>
-            </Card>
+            <TouchableOpacity onPress={() => updateCustomerRedemptionStatus(redemption.id, 'R')}> 
+              <Card style ={styles.card}>
+                <Card.Content style={styles.cardContent}>
+                <Text style={{ color:"white", fontWeight:"bold",fontSize: 30 }}>{redemption.redemption.couponCode}</Text>
+                </Card.Content>
+              </Card>
+            </TouchableOpacity>
       </View>
     
 )};
@@ -63,10 +67,18 @@ const styles = StyleSheet.create({
       fontSize: 16
   },
   card: {
-    margin:10,
+    margin:15,
     borderRadius:10,
     alignItems:"center",
     backgroundColor: "#1C9C9B",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 3,
+      height: 5,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 15.00,
+    elevation: 5,
   },
 
   cardContent: {

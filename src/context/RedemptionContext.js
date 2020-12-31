@@ -4,7 +4,7 @@ import RezeiptApi from '../api/rezeiptApi';
 const redemptionReducer = (state, action) => {
   switch (action.type) {
     case 'fetch_redemptions':
-      return action.payload;
+      return {redemptions: action.payload};
     default:
       return state;
   }
@@ -18,5 +18,5 @@ const fetchRedemptions = dispatch => async () => {
 export const { Context, Provider } = createDataContext(
   redemptionReducer, 
   { fetchRedemptions },
-  []
+  {redemptions:null}
 );

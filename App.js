@@ -17,6 +17,7 @@ import { Provider as AuthProvider } from './src/context/AuthContext';
 import { Provider as RedemptionProvider } from './src/context/RedemptionContext';
 import { Provider as CustomerRedemptionProvider } from './src/context/CustomerRedemptionContext';
 import { Provider as SalesProvider } from './src/context/SalesContext';
+import { Provider as CustomerProvider } from './src/context/CustomerContext';
 import { setNavigator } from './src/navigationRef';
 import CustomerRedemptionScreen from './src/screens/CustomerRedemptionScreen';
 
@@ -133,11 +134,13 @@ export default () => {
   return (
     <AuthProvider>
       <SalesProvider>
-        <RedemptionProvider>
-          <CustomerRedemptionProvider>
-            <App ref={(navigator) => { setNavigator(navigator)} } />
-          </CustomerRedemptionProvider> 
-        </RedemptionProvider>
+        <CustomerProvider>
+          <RedemptionProvider>
+            <CustomerRedemptionProvider>
+              <App ref={(navigator) => { setNavigator(navigator)} } />
+            </CustomerRedemptionProvider> 
+          </RedemptionProvider>
+        </CustomerProvider>
       </SalesProvider>
     </AuthProvider>
   );

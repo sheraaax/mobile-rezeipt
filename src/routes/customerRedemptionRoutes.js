@@ -26,8 +26,9 @@ router.get('/customerRedemption', async (req, res) => {
                 attributes: ['name','expirationDate','points','couponCode'],
             }],
             order: [
-                ['id', 'DESC']]
+                ['status', 'ASC']]
             });
+            console.log(customer_redemption);
         res.send(customer_redemption);
     }
     catch(error){
@@ -37,25 +38,24 @@ router.get('/customerRedemption', async (req, res) => {
 
 router.post('/customerRedemption', async(req, res) => {
         const {redemptionId,customerId} = req.body;
-        try{
+        
         let find = await CustomerRedemption.findOne({
             where: {
                 redemptionId: redemptionId,
                 customerId : customerId}
             });
             console.log(find);
-
+        
         if(!find){ 
                 const customer_redemption = new CustomerRedemption({ customerId, redemptionId});
                 await customer_redemption.save();
-                res.send(customer_redemption);
+                return res.status(200).send({ customer_redemption });
         }
-        else {
-            throw new Error('You have already redeemed this reward!');
-        }}
-        catch(error){
-                console.log(error);
-        }}
+        
+        return res.status(422).send({ error: 'You have already redeemed this reward!'});
+    
+        }
+        
 );
 
 router.get('/customerRedemption/:id', async (req, res) => {
@@ -68,6 +68,21 @@ router.get('/customerRedemption/:id', async (req, res) => {
     catch(error){
         console.log(error)
     }
+});
+
+router.put('/redeemStatus/:id', async (req, res) => {
+    const customerRedemptionId = req.params.id;
+    //const {status} = req.body.status;
+
+    await CustomerRedemption.update( {status: req.body.status}, { where: {id: customerRedemptionId }})
+    .then(function(rowsUpdated) {
+        res.json(rowsUpdated)
+        //res.status(200).send({ status });
+      })
+      .catch(err => {
+        res.status(500).send({ error: 'Error updating CustomerRedemption with id=' +customerRedemptionId});
+    });
+
 });
 
 module.exports = router;
