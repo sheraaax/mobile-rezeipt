@@ -24,7 +24,7 @@ router.get('/customerRedemption', async (req, res) => {
                 attributes: ['name','description','expirationDate','points','couponCode'],
             }],
             order: [
-                ['id', 'DESC']]
+                ['status', 'ASC']]
             });
             console.log(customer_redemption);
         res.send(customer_redemption);
@@ -66,6 +66,21 @@ router.get('/customerRedemption/:id', async (req, res) => {
     catch(error){
         console.log(error)
     }
+});
+
+router.put('/redeemStatus/:id', async (req, res) => {
+    const customerRedemptionId = req.params.id;
+    //const {status} = req.body.status;
+
+    await CustomerRedemption.update( {status: req.body.status}, { where: {id: customerRedemptionId }})
+    .then(function(rowsUpdated) {
+        res.json(rowsUpdated)
+        //res.status(200).send({ status });
+      })
+      .catch(err => {
+        res.status(500).send({ error: 'Error updating CustomerRedemption with id=' +customerRedemptionId});
+    });
+
 });
 
 module.exports = router;

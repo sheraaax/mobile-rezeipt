@@ -15,14 +15,17 @@ const RedemptionScreen = ({navigation}) => {
   const { state: {redemptions}, fetchRedemptions } = useContext(RedemptionContext);
   const { state: {errorMessage}, createCustomerRedemption, clearErrorMessage } = useContext(CustomerRedemptionContext);
   const { state: {customer}, fetchCustomer } = useContext(CustomerContext);
-
+  const totalPoints = navigation.getParam('totalPoints');
+  
+  // kat customerRedemptionScreen kena tekan rewards available dulu baru totalPoints dia transfer haha
+  //console.log('totalPoints:',totalPoints);
   console.log('Error:',errorMessage);
 
   return (
     <View style={styles.container}>
       <KeyboardAwareScrollView>
         
-        <Text style={styles.totalReceipts}>1120</Text>
+        <Text style={styles.totalReceipts}>{totalPoints}</Text>
         <Text style={styles.headline}>Receipts Collected</Text>
 
       <View style={styles.navigation}>

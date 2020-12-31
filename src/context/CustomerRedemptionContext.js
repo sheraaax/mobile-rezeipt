@@ -1,10 +1,11 @@
 import createDataContext from './createDataContext';
 import RezeiptApi from '../api/rezeiptApi';
+import { navigate } from '../navigationRef';
 
 const customerRedemptionReducer = (state, action) => {
     switch (action.type){
         case 'fetch_customerRedemptions':
-            return action.payload;
+            return {customerRedemptions: action.payload};
         case 'fetch_customerRedemptionDetails':
             return action.payload;
         case 'add_error':
@@ -35,15 +36,21 @@ const fetchCustomerRedemptions = dispatch => async () => {
     dispatch({ type: 'fetch_customerRedemptions', payload: response.data });
   };
 
-const fetchCustomerRedemptionDetails = dispatch => async() => {
-    const response = await RezeiptApi.get('/customerRedemption/:id');
+const fetchCustomerRedemptionDetails = dispatch => async(id) => {
+    const response = await RezeiptApi.get(`/customerRedemption/${id}`);
     dispatch({ type: 'fetch_customerRedemptionDetails', payload:response.data});
+};
+
+const updateCustomerRedemptionStatus = dispatch => async(id,status) => {
+    console.log(id,status);
+    await RezeiptApi.put(`/redeemStatus/${id}`, {status});
+    navigate('CustomerRedemption');
 };
 
 
 
 export const { Context, Provider } = createDataContext(
     customerRedemptionReducer, 
-    { createCustomerRedemption, fetchCustomerRedemptions, fetchCustomerRedemptionDetails, clearErrorMessage },
-    { errorMessage:'' }
+    { createCustomerRedemption, fetchCustomerRedemptions, fetchCustomerRedemptionDetails, clearErrorMessage, updateCustomerRedemptionStatus },
+    { errorMessage:'', customerRedemptions:[] }
   );
