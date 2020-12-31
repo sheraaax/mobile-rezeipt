@@ -4,6 +4,7 @@ const requireAuth = require('../middlewares/requireAuth');
 const Redemption = require('../models/redemption');
 const Customer = require('../models/customer');
 const   CustomerRedemption = require('../models/customer_redemption');
+const Stores = require('../models/stores');
 
 const router = express.Router();
 
@@ -15,13 +16,14 @@ Redemption.hasMany(CustomerRedemption);
 CustomerRedemption.belongsTo(Redemption);
 
 
+
 router.get('/customerRedemption', async (req, res) => {
     try{
         const customerId = req.customer.id;
         const customer_redemption = await CustomerRedemption.findAll({ where: {customerId}, 
             include: [{
                 model: Redemption,
-                attributes: ['name','description','expirationDate','points','couponCode'],
+                attributes: ['name','expirationDate','points','couponCode'],
             }],
             order: [
                 ['status', 'ASC']]

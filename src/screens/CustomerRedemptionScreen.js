@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import { Avatar, Card, Title, Paragraph } from 'react-native-paper';
-import { StyleSheet, Text, View, TouchableOpacity, FlatList, Dimensions } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, FlatList, Dimensions, Alert} from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { Context as CustomerRedemptionContext } from '../context/CustomerRedemptionContext';
@@ -8,7 +8,7 @@ import { NavigationEvents } from 'react-navigation';
 
 const { height, width } = Dimensions.get('window');
 
-_renderStatus = (status) => {
+  _renderStatus = (status) => {
   if(status == "A"){
       return(
           <Paragraph style={styles.cardContentDescription}>Available</Paragraph>
@@ -71,20 +71,35 @@ const CustomerRedemptionScreen = ({navigation}) => {
               (item.status == 'A' ? ( 
 
               <View style={styles.card}>
-                <TouchableOpacity onPress={()=>navigation.navigate('CustomerRedemptionDetail', {id: item.id})}>
-                    <Card style ={styles.card}>
-                      <Card.Content style={styles.cardContent}>
-                        <Icon size={60} name="birthday-cake" color="grey"/>
 
-                        <View>
-                          <Title style={styles.cardContentTitle}>{item.redemption.name}</Title>
-                          <Paragraph style={styles.cardContentDescription}>{item.redemption.description}</Paragraph>
-                          {this._renderStatus(item.status)}
-                        </View>
+              <TouchableOpacity onPress={()=>
+                Alert.alert(
+                  'Confirmation', 
+                  'Are you sure to redeem this reward? You will not be able to redeem this reward again',
+                  [{
+                  text: 'Redeem',
+                  onPress: () => navigation.navigate('CustomerRedemptionDetail', {id: item.id})
+                },
+                {
+                  text: 'Cancel',
+                  onPress: () => console.log("Cancel Pressed"),
+                  style: 'cancel'
+                }
+                ])}>
+                  <Card style ={styles.card}>
+                    <Card.Content style={styles.cardContent}>
+                      <Icon size={60} name="birthday-cake" color="grey"/>
 
-                      </Card.Content>
-                    </Card>
-                </TouchableOpacity>
+                      <View>
+                        <Title style={styles.cardContentTitle}>Kedai Runcit Yam</Title>
+                        <Paragraph style={styles.cardContentDescription}>{item.redemption.name}</Paragraph>
+                        {/* {this._renderStatus(item.status)} */}
+                      </View>
+
+                    </Card.Content>
+                  </Card>
+              </TouchableOpacity>
+               
               </View>
               ) : item.status == 'R' ? (
               <View style={styles.card}>
