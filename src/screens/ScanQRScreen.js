@@ -2,11 +2,14 @@ import React, { Component, Fragment } from 'react';
 import {Dimensions, StyleSheet} from 'react-native';
 import QRCodeScanner from 'react-native-qrcode-scanner';
 import { TouchableOpacity, Text, StatusBar, Linking, View } from 'react-native';
+import { Context as SalesContext } from '../context/SalesContext';
 
 const deviceWidth = Dimensions.get('screen').width;
 const deviceHeight = Dimensions.get('screen').height;
 
 class ScanQRScreen extends Component {
+    static contextType = SalesContext;
+
     constructor(props) {
         super(props);
         this.state = {
@@ -18,25 +21,14 @@ class ScanQRScreen extends Component {
 
     onSuccess = (e) => {
         const check = e.data.substring(0, 4);
-        console.log('scanned data' + check);
+        console.log('Sales ID : ' + e.data);
         this.setState({
             result: e,
             scan: false,
             ScanResult: true
-        })
-        if (check === 'http') {
-            Linking
-                .openURL(e.data)
-                .catch(err => console.error('An error occured', err));
-
-
-        } else {
-            this.setState({
-                result: e,
-                scan: false,
-                ScanResult: true
-            })
-        }
+        }) 
+        const {state, updateSale} =this.context
+        console.log(this.context.updateSale(e.data,2))
 
     }
 
@@ -47,12 +39,14 @@ class ScanQRScreen extends Component {
     }
     scanAgain = () => {
         this.setState({
-            scan: true,
+            scan: false,
             ScanResult: false
         })
+        this.props.navigation.navigate('Home')
     }
     render() {
-        const { scan, ScanResult, result } = this.state
+        const { scan, ScanResult, result } = this.state;
+
         return (
             <View style={styles.scrollViewStyle}>
                 <Fragment>
@@ -76,7 +70,7 @@ class ScanQRScreen extends Component {
                                  <Text> Sales ID : {result.data}</Text>
                                 {/*<Text numberOfLines={1}>RawData: {result.rawData}</Text>*/}
                                 <TouchableOpacity onPress={this.scanAgain} style={styles.buttonTouchable}>
-                                    <Text style={styles.buttonTextStyle}>Click to Scan Again</Text>
+                                    <Text style={styles.buttonTextStyle}>View Receipt</Text>
                                 </TouchableOpacity>
 
                             </View>
