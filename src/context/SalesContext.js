@@ -25,7 +25,7 @@ const fetchSales = dispatch => async () => {
 
 const updateSale = dispatch => async (id,customerId) => {
     try{
-    const response = await rezeiptApi.put(`/sales/${id}`, {customerId});
+    const response = await rezeiptApi.put(`/sales/${id}`);
     }catch (err) {
         dispatch({ type: 'add_error', payload: 'Invalid QR Code! Please try again'});
     }};
