@@ -93,7 +93,7 @@ const CustomerRedemptionScreen = ({navigation}) => {
                       <View>
                         <Title style={styles.cardContentTitle}>Kedai Runcit Yam</Title>
                         <Paragraph style={styles.cardContentDescription}>{item.redemption.name}</Paragraph>
-                        {/* {this._renderStatus(item.status)} */}
+                        {this._renderStatus(item.status)}
                       </View>
 
                     </Card.Content>
@@ -109,8 +109,8 @@ const CustomerRedemptionScreen = ({navigation}) => {
                             <Icon size={60} name="birthday-cake" color="grey"/>
 
                             <View>
-                              <Title style={styles.cardContentTitle}>{item.redemption.name}</Title>
-                              <Paragraph style={styles.cardContentDescription}>{item.redemption.description}</Paragraph>
+                              <Title style={styles.cardContentTitle}>Kedai Runcit Yam</Title>
+                              <Paragraph style={styles.cardContentDescription}>{item.redemption.name}</Paragraph>
                               {this._renderStatus(item.status)}
                             </View>
 
@@ -126,9 +126,9 @@ const CustomerRedemptionScreen = ({navigation}) => {
                             <Icon size={60} name="birthday-cake" color="grey"/>
 
                             <View>
-                              <Title style={styles.cardContentTitle}>{item.redemption.name}</Title>
-                              <Paragraph style={styles.cardContentDescription}>{item.redemption.description}</Paragraph>
-                              {/* {this._renderStatus(item.status)} */}
+                              <Title style={styles.cardContentTitle}>Kedai Runcit Yam</Title>
+                              <Paragraph style={styles.cardContentDescription}>{item.redemption.name}</Paragraph>
+                              {this._renderStatus(item.status)}
                             </View>
 
                           </Card.Content>
