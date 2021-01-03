@@ -7,8 +7,6 @@ const requireAuth = require('../middlewares/requireAuth');
 
 const router = express.Router();
 
-router.use(requireAuth);
-
 router.post('/signup', async (req, res) => {
 
   // Create a Customer
