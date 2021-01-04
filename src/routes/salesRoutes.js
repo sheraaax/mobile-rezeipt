@@ -38,6 +38,11 @@ router.put('/sales/:id', async(req,res) => {
             res.json(rowsUpdated)
             //res.status(200).send({ status });
           })
+          Customer.increment({pointsCollected: 10}, { where: {id: req.customer.id} })
+          .then(function(rowsUpdated) {
+            res.json(rowsUpdated)
+            //res.status(200).send({ status });
+          })
           .catch(err => {
             res.status(500).send({ error: 'Error updating Sales with id=' + salesId});
     })};
