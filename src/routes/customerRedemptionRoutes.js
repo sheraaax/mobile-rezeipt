@@ -48,15 +48,13 @@ router.post('/customerRedemption', async(req, res) => {
             console.log(find);
         
         if(!find){ 
+                Redemption.decrement({discountUnit: 1}, { where: {id: redemptionId} })
                 const customer_redemption = new CustomerRedemption({ customerId, redemptionId});
                 await customer_redemption.save();
                 return res.status(200).send({ customer_redemption });
         }
-        
         return res.status(422).send({ error: 'You have already redeemed this reward!'});
-    
-        }
-        
+    }      
 );
 
 router.get('/customerRedemption/:id', async (req, res) => {
