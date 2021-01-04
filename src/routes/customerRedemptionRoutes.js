@@ -37,7 +37,8 @@ router.get('/customerRedemption', async (req, res) => {
 });
 
 router.post('/customerRedemption', async(req, res) => {
-        const {redemptionId,customerId} = req.body;
+        const redemptionId = req.body.redemptionId;
+        const customerId = req.customer.id;
         
         let find = await CustomerRedemption.findOne({
             where: {
