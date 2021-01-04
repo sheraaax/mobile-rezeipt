@@ -74,11 +74,10 @@ class ScanQRScreen extends Component {
                     {ScanResult &&
                         <Fragment>
                             <View style={ScanResult ? styles.scanCardView : styles.cardView}>
-                                <Text>Type : {result.type}</Text>
-                                <Text>Your transaction has been scanned! </Text>
+                                <Text>Your transaction has been scanned!</Text>
+                                <Text>You have earned 10 points!</Text>
                                   <Text>Thank your for using our system.</Text>
                                  <Text> Sales ID : {result.data}</Text>
-                                {/*<Text numberOfLines={1}>RawData: {result.rawData}</Text>*/}
                                 <TouchableOpacity onPress={this.scanAgain} style={styles.buttonTouchable}>
                                     <Text style={styles.buttonTextStyle}>View Receipt</Text>
                                 </TouchableOpacity>
