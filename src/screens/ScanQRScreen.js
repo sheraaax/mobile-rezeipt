@@ -3,6 +3,7 @@ import {Dimensions, StyleSheet} from 'react-native';
 import QRCodeScanner from 'react-native-qrcode-scanner';
 import { TouchableOpacity, Text, StatusBar, Linking, View } from 'react-native';
 import { Context as SalesContext } from '../context/SalesContext';
+import { Alert } from 'react-native';
 
 const deviceWidth = Dimensions.get('screen').width;
 const deviceHeight = Dimensions.get('screen').height;
@@ -20,7 +21,17 @@ class ScanQRScreen extends Component {
     }
 
     onSuccess = (e) => {
-        const check = e.data.substring(0, 4);
+        if(e.data.length != 16){
+            Alert.alert(
+                "Error",
+                "This is not a valid QR! Please try again",
+                [
+                  { text: "OK"}
+                ],
+                { cancelable: false }
+              )
+              return;
+        }
         console.log('Sales ID : ' + e.data);
         this.setState({
             result: e,
@@ -28,8 +39,7 @@ class ScanQRScreen extends Component {
             ScanResult: true
         }) 
         const {state, updateSale} =this.context
-        console.log(this.context.updateSale(e.data,2))
-
+        this.context.updateSale(e.data)
     }
 
     activeQR = () => {
