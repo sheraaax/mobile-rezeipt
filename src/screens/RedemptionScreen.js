@@ -20,8 +20,9 @@ const RedemptionScreen = ({navigation}) => {
   console.log('Error:',errorMessage);
 
   return (
+    <KeyboardAwareScrollView>
     <View style={styles.container}>
-      <KeyboardAwareScrollView>
+      <ScrollView>
         
         <Text style={styles.totalReceipts}>{totalPoints}</Text>
         <Text style={styles.headline}>Receipts Collected</Text>
@@ -78,6 +79,7 @@ const RedemptionScreen = ({navigation}) => {
 
                       <View>
                         <Title style={styles.cardContentTitle}>{item.store.name}</Title>
+                        <Paragraph style={styles.cardContentPoints}>{item.points} points</Paragraph>
                         <Paragraph style={styles.cardContentDescription}>{item.name}</Paragraph>
                       </View>
 
@@ -89,8 +91,10 @@ const RedemptionScreen = ({navigation}) => {
           }}
         />
       </View>
-      </KeyboardAwareScrollView>
+      </ScrollView>
       </View>
+      
+      </KeyboardAwareScrollView>
        )
 };
 
@@ -148,6 +152,12 @@ const styles = StyleSheet.create({
   cardContentDescription: {
     marginLeft:20,
   },
+
+  cardContentPoints: {
+    marginLeft:20,
+    fontWeight:"bold",
+    color:"#1C9C9B",
+  }
 });
 
 export default RedemptionScreen;
