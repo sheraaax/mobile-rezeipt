@@ -33,7 +33,7 @@ router.put('/sales/:id', async(req,res) => {
         console.log(find);
     
     if(find){ 
-        await Sales.update( {customerId: req.body.customerId}, { where: {id: salesId }})
+        await Sales.update( {customerId: req.customer.id}, { where: {id: salesId }})
         .then(function(rowsUpdated) {
             res.json(rowsUpdated)
             //res.status(200).send({ status });
