@@ -21,14 +21,12 @@ const clearErrorMessage = (dispatch) => () => {
     dispatch({ type: 'clear_error_message' });
 };
 
-const createCustomerRedemption = dispatch => async (customerId, redemptionId) => {
-    console.log(customerId, redemptionId);
+const createCustomerRedemption = dispatch => async (redemptionId) => {
     try {
-        await RezeiptApi.post('/customerRedemption', {customerId, redemptionId});
+        await RezeiptApi.post('/customerRedemption', {redemptionId});
     } catch (err) {
         dispatch({ type: 'add_error', payload: 'You have already redeemed this reward!'});
     }
-
 };
 
 const fetchCustomerRedemptions = dispatch => async () => {

@@ -5,7 +5,6 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { Context as RedemptionContext } from '../context/RedemptionContext';
 import { Context as CustomerRedemptionContext } from '../context/CustomerRedemptionContext';
-import { Context as CustomerContext } from '../context/CustomerContext';
 import { NavigationEvents } from 'react-navigation';
 
 const { height, width } = Dimensions.get('window');
@@ -14,7 +13,6 @@ const { height, width } = Dimensions.get('window');
 const RedemptionScreen = ({navigation}) => {
   const { state: {redemptions}, fetchRedemptions } = useContext(RedemptionContext);
   const { state: {errorMessage}, createCustomerRedemption, clearErrorMessage } = useContext(CustomerRedemptionContext);
-  const { state: {customer}, fetchCustomer } = useContext(CustomerContext);
   const totalPoints = navigation.getParam('totalPoints');
   
   // kat customerRedemptionScreen kena tekan rewards available dulu baru totalPoints dia transfer haha
@@ -22,8 +20,9 @@ const RedemptionScreen = ({navigation}) => {
   console.log('Error:',errorMessage);
 
   return (
+    <KeyboardAwareScrollView>
     <View style={styles.container}>
-      <KeyboardAwareScrollView>
+      <ScrollView>
         
         <Text style={styles.totalReceipts}>{totalPoints}</Text>
         <Text style={styles.headline}>Receipts Collected</Text>
@@ -52,7 +51,7 @@ const RedemptionScreen = ({navigation}) => {
         : null}
 
       <View>
-        <NavigationEvents onDidFocus={fetchCustomer} onWillFocus={fetchRedemptions} onWillBlur={clearErrorMessage} />
+        <NavigationEvents onWillFocus={fetchRedemptions} onWillBlur={clearErrorMessage} />
         <FlatList
           data={redemptions}
           keyExtractor={item => item.id.toString()}
@@ -65,7 +64,7 @@ const RedemptionScreen = ({navigation}) => {
                   'Are you sure to redeem this reward?',
                   [{
                   text: 'Redeem',
-                  onPress: () => { createCustomerRedemption(customer.cust.id, item.id) }
+                  onPress: () => { createCustomerRedemption(item.id) }
                 },
                 {
                   text: 'Cancel',
@@ -80,6 +79,7 @@ const RedemptionScreen = ({navigation}) => {
 
                       <View>
                         <Title style={styles.cardContentTitle}>{item.store.name}</Title>
+                        <Paragraph style={styles.cardContentPoints}>{item.points} points</Paragraph>
                         <Paragraph style={styles.cardContentDescription}>{item.name}</Paragraph>
                       </View>
 
@@ -91,8 +91,10 @@ const RedemptionScreen = ({navigation}) => {
           }}
         />
       </View>
-      </KeyboardAwareScrollView>
+      </ScrollView>
       </View>
+      
+      </KeyboardAwareScrollView>
        )
 };
 
@@ -150,6 +152,12 @@ const styles = StyleSheet.create({
   cardContentDescription: {
     marginLeft:20,
   },
+
+  cardContentPoints: {
+    marginLeft:20,
+    fontWeight:"bold",
+    color:"#1C9C9B",
+  }
 });
 
 export default RedemptionScreen;
