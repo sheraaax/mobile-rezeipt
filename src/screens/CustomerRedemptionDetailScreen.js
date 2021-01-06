@@ -10,7 +10,7 @@ const WIDTH = Dimensions.get('window').width;
 
 const CustomerRedemptionDetailScreen = ({navigation}) => {
     const id = navigation.getParam('id');
-    const { state: {customerRedemptions}, updateCustomerRedemptionStatus } = useContext(CustomerRedemptionContext);
+    const { state: {customerRedemptions}, updateCustomerRedemptionStatus, updateCustomerPoints } = useContext(CustomerRedemptionContext);
 
     const redemption = customerRedemptions.find(r => r.id === id);
     //console.log(redemption.id);
@@ -29,7 +29,8 @@ const CustomerRedemptionDetailScreen = ({navigation}) => {
                 <Paragraph style={styles.cardContentDescription}>Press the coupon code once successfully redeemed</Paragraph>     
             </View>
 
-            <TouchableOpacity onPress={() => updateCustomerRedemptionStatus(redemption.id, 'R')}> 
+            <TouchableOpacity onPress={() => {updateCustomerRedemptionStatus(redemption.id, 'R');
+                                              updateCustomerPoints(redemption.id, redemption.redemption.points)} }> 
               <Card style ={styles.card}>
                 <Card.Content style={styles.cardContent}>
                 <Text style={{ color:"white", fontWeight:"bold",fontSize: 30 }}>{redemption.redemption.couponCode}</Text>

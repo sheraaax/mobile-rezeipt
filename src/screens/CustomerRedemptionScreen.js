@@ -29,7 +29,8 @@ const { height, width } = Dimensions.get('window');
 const CustomerRedemptionScreen = ({navigation}) => {
 
   const { state: {customerRedemptions}, fetchCustomerRedemptions } = useContext(CustomerRedemptionContext);
-
+  const pointsCollected = navigation.getParam('pointsCollected');
+  
   let totalPoints = 0;
   customerRedemptions.forEach((item) => {
       if (item.status == 'R') {
@@ -42,12 +43,12 @@ const CustomerRedemptionScreen = ({navigation}) => {
     <KeyboardAwareScrollView>
       <View style={styles.container}>
         
-          <Text style={styles.totalReceipts}>{totalPoints}</Text>
+          <Text style={styles.totalReceipts}>{pointsCollected}</Text>
           <Text style={styles.headline}>Receipts Collected</Text>
 
       <View style={styles.navigation}>
 
-        <TouchableOpacity onPress={()=>navigation.navigate('Redemption', {totalPoints: totalPoints})}>
+        <TouchableOpacity onPress={()=>navigation.navigate('Redemption')}>
           <Text style={styles.navigationText}>Rewards Available</Text>
         </TouchableOpacity>
 

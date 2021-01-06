@@ -84,4 +84,29 @@ router.put('/redeemStatus/:id', async (req, res) => {
 
 });
 
+router.put('/customerRedeemPoints/:id', async (req, res) => {
+    const customerRedemptionId = req.params.id;
+    const customerId = req.customer.id;
+    const {points} = req.body;
+
+    //console.log('points:',points);
+
+    let find = await CustomerRedemption.findOne({
+        where: {
+            id: customerRedemptionId}
+        });
+        //console.log(find);
+    
+    if (find) {
+        await Customer.decrement('pointsCollected', { by: points, where: {id: customerId}} )
+        .then(function(rowsUpdated) {
+            res.json(rowsUpdated)
+          })
+          .catch(err => {
+            res.status(500).send({ error: 'Error updating Customer with id=' + customerId});
+        })
+    };
+
+});
+
 module.exports = router;

@@ -40,15 +40,24 @@ const fetchCustomerRedemptionDetails = dispatch => async(id) => {
 };
 
 const updateCustomerRedemptionStatus = dispatch => async(id,status) => {
-    console.log(id,status);
     await RezeiptApi.put(`/redeemStatus/${id}`, {status});
     navigate('CustomerRedemption');
 };
+
+const updateCustomerPoints = dispatch => async (id,points) => {
+    await RezeiptApi.put(`/customerRedeemPoints/${id}`, {points});
+}
 
 
 
 export const { Context, Provider } = createDataContext(
     customerRedemptionReducer, 
-    { createCustomerRedemption, fetchCustomerRedemptions, fetchCustomerRedemptionDetails, clearErrorMessage, updateCustomerRedemptionStatus },
+    { createCustomerRedemption, 
+      fetchCustomerRedemptions, 
+      fetchCustomerRedemptionDetails, 
+      clearErrorMessage, 
+      updateCustomerRedemptionStatus, 
+      updateCustomerPoints 
+    },
     { errorMessage:'', customerRedemptions:[] }
   );

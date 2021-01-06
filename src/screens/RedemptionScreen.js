@@ -5,6 +5,8 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { Context as RedemptionContext } from '../context/RedemptionContext';
 import { Context as CustomerRedemptionContext } from '../context/CustomerRedemptionContext';
+import { Context as CustomerContext } from '../context/CustomerContext';
+import { Context as SalesContext } from '../context/SalesContext';
 import { NavigationEvents } from 'react-navigation';
 
 const { height, width } = Dimensions.get('window');
@@ -13,27 +15,29 @@ const { height, width } = Dimensions.get('window');
 const RedemptionScreen = ({navigation}) => {
   const { state: {redemptions}, fetchRedemptions } = useContext(RedemptionContext);
   const { state: {errorMessage}, createCustomerRedemption, clearErrorMessage } = useContext(CustomerRedemptionContext);
-  const totalPoints = navigation.getParam('totalPoints');
-  
-  // kat customerRedemptionScreen kena tekan rewards available dulu baru totalPoints dia transfer haha
-  //console.log('totalPoints:',totalPoints);
-  console.log('Error:',errorMessage);
+  const { state: {customer}, fetchCustomer } = useContext(CustomerContext);
+  //const { state, fetchSales} = useContext(SalesContext);
+
+  let pointsCollected = customer.cust.pointsCollected;
+  //console.log('Error:',errorMessage);
+  console.log('Customer:',pointsCollected);
+
 
   return (
     <KeyboardAwareScrollView>
     <View style={styles.container}>
       <ScrollView>
         
-        <Text style={styles.totalReceipts}>{totalPoints}</Text>
-        <Text style={styles.headline}>Receipts Collected</Text>
+        <Text style={styles.totalReceipts}>{customer.cust.pointsCollected}</Text>
+        <Text style={styles.headline}>Points Collected</Text>
 
       <View style={styles.navigation}>
 
         <TouchableOpacity>
           <Text style={styles.navigationText}>Rewards Available</Text>
         </TouchableOpacity>
-
-        <TouchableOpacity onPress={()=>navigation.navigate('CustomerRedemption')}>
+        
+        <TouchableOpacity onPress={()=>navigation.navigate('CustomerRedemption', {pointsCollected: pointsCollected})}>
           <Text style={styles.navigationText}>Redeemed</Text>
         </TouchableOpacity>
 
@@ -51,7 +55,7 @@ const RedemptionScreen = ({navigation}) => {
         : null}
 
       <View>
-        <NavigationEvents onWillFocus={fetchRedemptions} onWillBlur={clearErrorMessage} />
+        <NavigationEvents onDidFocus={fetchCustomer} onWillFocus={fetchRedemptions} onWillBlur={clearErrorMessage} />
         <FlatList
           data={redemptions}
           keyExtractor={item => item.id.toString()}
