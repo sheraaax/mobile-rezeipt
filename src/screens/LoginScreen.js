@@ -68,9 +68,9 @@ const LoginScreen = ({navigation}) => {
           <Text style={styles.signupText}>Don't have an account? Sign Up</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity>
+        {/* <TouchableOpacity>
           <Text style={styles.forgot}>Forgot Password?</Text>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
 
       </View>
   );
