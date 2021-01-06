@@ -57,21 +57,6 @@ router.post('/login', async (req, res) => {
 
  });
 
-
- router.get('/customer', async (req, res) => {
-  
-  try {
-    const customerId = req.customer.id;
-    console.log('customerId: ',customerId);
-
-    const cust = await Customer.findByPk(customerId);
-    return res.status(200).send({ cust });
-  } catch (err) {
-    return res.status(404).send({ error: 'customerId not found!'});
-  }
-
- }); 
-
  
 
 module.exports = router;
