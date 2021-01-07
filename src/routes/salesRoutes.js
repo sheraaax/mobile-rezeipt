@@ -65,4 +65,10 @@ router.get('/customer', async (req, res) => {
   
    }); 
 
+   router.get('/customerPoints', async (req,res) =>{
+       const customerId = req.customer.id;
+       const customerPoints = await Customer.findOne({ where: { id: customerId }, attributes : ['pointsCollected']});
+       res.send(customerPoints);
+   })
+   
 module.exports = router;

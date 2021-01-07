@@ -11,16 +11,29 @@ import { NavigationEvents } from 'react-navigation';
 
 const { height, width } = Dimensions.get('window');
 
-
 const RedemptionScreen = ({navigation}) => {
   const { state: {redemptions}, fetchRedemptions } = useContext(RedemptionContext);
-  const { state: {errorMessage}, createCustomerRedemption, clearErrorMessage } = useContext(CustomerRedemptionContext);
-  const { state: {customer}, fetchCustomer } = useContext(CustomerContext);
+  const { state: {errorMessage}, createCustomerRedemption, updateCustomerPoints, clearErrorMessage } = useContext(CustomerRedemptionContext);
+  const { state: {customer}, fetchCustomerPoints } = useContext(CustomerContext);
   //const { state, fetchSales} = useContext(SalesContext);
 
-  let pointsCollected = customer.cust.pointsCollected;
   //console.log('Error:',errorMessage);
-  console.log('Customer:',pointsCollected);
+ // console.log('Customer:',pointsCollected);
+ let pointsCollected = customer.pointsCollected;
+
+ function cubatrytest(points,id){
+   if(pointsCollected < points){
+     Alert.alert("Error", "You don't have enough points!",
+     [
+      { text: "OK", onPress: () => console.log("OK Pressed") }
+    ],
+    { cancelable: false })
+   }
+   else{ 
+    createCustomerRedemption(id);
+    updateCustomerPoints(id, points);
+   }
+ }
 
 
   return (
@@ -28,8 +41,9 @@ const RedemptionScreen = ({navigation}) => {
     <View style={styles.container}>
       <ScrollView>
         
-        <Text style={styles.totalReceipts}>{customer.cust.pointsCollected}</Text>
+        <Text style={styles.totalReceipts}>{pointsCollected}</Text>
         <Text style={styles.headline}>Points Collected</Text>
+        
 
       <View style={styles.navigation}>
 
@@ -55,7 +69,7 @@ const RedemptionScreen = ({navigation}) => {
         : null}
 
       <View>
-        <NavigationEvents onDidFocus={fetchCustomer} onWillFocus={fetchRedemptions} onWillBlur={clearErrorMessage} />
+        <NavigationEvents onDidFocus={fetchRedemptions} onWillFocus={fetchCustomerPoints} onWillBlur={clearErrorMessage} />
         <FlatList
           data={redemptions}
           keyExtractor={item => item.id.toString()}
@@ -68,7 +82,9 @@ const RedemptionScreen = ({navigation}) => {
                   'Are you sure to redeem this reward?',
                   [{
                   text: 'Redeem',
-                  onPress: () => { createCustomerRedemption(item.id) }
+                  onPress: () => { 
+                    cubatrytest(item.points,item.id);
+                  }
                 },
                 {
                   text: 'Cancel',
